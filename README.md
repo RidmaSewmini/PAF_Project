@@ -16,9 +16,9 @@ This project is a **Full Stack Web Application** built using:
 |-----------|----------------------------------------|---------------------------|
 | `main`    | Production-ready stable code           | ❌ DO NOT PUSH DIRECTLY   |
 | `develop` | Integration branch (combined features) | ✅ Via Pull Request (PR)  |
-| `auth`    | Authentication & Admin Module          | 👤 Ridma             |
-| `booking` | Product Catalog & UI                  | 👤 Arindu              |
-| `ticketing` | Dynamic Service Engine                | 👤 Sabra              |
+| `auth`    | auth-notifications-role-management          | 👤 Ridma             |
+| `booking` | booking-management                  | 👤 Arindu              |
+| `ticketing` | ticketing-system               | 👤 Sabra              |
 
 ---
 
