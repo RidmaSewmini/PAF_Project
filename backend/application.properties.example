@@ -1,0 +1,18 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# application.properties.example
+#
+# Safe template — commit this file.
+# Copy to application.properties and fill in real values from your .env file.
+# ─────────────────────────────────────────────────────────────────────────────
+
+spring.application.name=backend
+
+# Set MONGO_URI as an environment variable or in backend/.env (never hardcode)
+spring.data.mongodb.uri=${MONGO_URI}
+spring.data.mongodb.database=paf_db
+
+# Exclude conflicting MongoDB auto-configuration (Spring Boot 4.x workaround)
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+
+# Server
+server.port=8080
