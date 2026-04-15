@@ -1,7 +1,13 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createFacility, updateFacility } from "../services/facilityService";
 
+const FACILITY_TYPES = ["LAB", "LECTURE_HALL", "MEETING_ROOM", "EQUIPMENT"];
+const FACILITY_STATUSES = ["ACTIVE", "OUT_OF_SERVICE"];
+
 export default function FacilityForm({ initialValues, facilityId, onSaved }) {
+  const navigate = useNavigate();
+
   const initial = useMemo(
     () =>
       initialValues || {
@@ -9,7 +15,9 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
         type: "",
         location: "",
         capacity: "",
-        status: "",
+        status: "ACTIVE",
+        description: "",
+        availabilityWindows: [],
       },
     [initialValues]
   );
@@ -38,7 +46,11 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
         ? await updateFacility(facilityId, payload)
         : await createFacility(payload);
 
-      onSaved?.(response.data);
+      if (onSaved) {
+        onSaved(response.data);
+      } else {
+        navigate("/facilities");
+      }
     } catch (e2) {
       setError(e2?.message || "Failed to save facility.");
     } finally {
@@ -46,58 +58,166 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
     }
   };
 
+  const isEdit = Boolean(facilityId);
+
   return (
-    <form onSubmit={onSubmit} className="p-6">
-      <h1 className="text-xl font-semibold">Facility</h1>
+    <div className="min-h-screen bg-gray-50 py-10 px-4">
+      <div className="max-w-2xl mx-auto">
 
-      <div className="mt-4 grid gap-3 max-w-xl">
-        <input
-          name="name"
-          value={values.name}
-          onChange={onChange}
-          placeholder="Name"
-          className="border rounded px-3 py-2"
-        />
-        <input
-          name="type"
-          value={values.type}
-          onChange={onChange}
-          placeholder="Type"
-          className="border rounded px-3 py-2"
-        />
-        <input
-          name="location"
-          value={values.location}
-          onChange={onChange}
-          placeholder="Location"
-          className="border rounded px-3 py-2"
-        />
-        <input
-          name="capacity"
-          value={values.capacity}
-          onChange={onChange}
-          placeholder="Capacity"
-          type="number"
-          className="border rounded px-3 py-2"
-        />
-        <input
-          name="status"
-          value={values.status}
-          onChange={onChange}
-          placeholder="Status"
-          className="border rounded px-3 py-2"
-        />
+        {/* Header */}
+        <div className="mb-8">
+          <button
+            type="button"
+            onClick={() => navigate("/facilities")}
+            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-4 transition-colors"
+          >
+            ← Back to Facilities
+          </button>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {isEdit ? "Edit Facility" : "Add New Facility"}
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            {isEdit
+              ? "Update the details for this facility."
+              : "Fill in the details to register a new facility."}
+          </p>
+        </div>
 
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        {/* Card */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+          <form onSubmit={onSubmit} className="space-y-6">
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="border rounded px-3 py-2"
-        >
-          {loading ? "Saving…" : "Save"}
-        </button>
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Facility Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                name="name"
+                value={values.name}
+                onChange={onChange}
+                placeholder="e.g. Computer Lab A"
+                required
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              />
+            </div>
+
+            {/* Type + Status row */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Type <span className="text-red-500">*</span>
+                </label>
+                <select
+                  name="type"
+                  value={values.type}
+                  onChange={onChange}
+                  required
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
+                >
+                  <option value="">Select type…</option>
+                  {FACILITY_TYPES.map((t) => (
+                    <option key={t} value={t}>
+                      {t.replace("_", " ")}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Status
+                </label>
+                <select
+                  name="status"
+                  value={values.status}
+                  onChange={onChange}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
+                >
+                  {FACILITY_STATUSES.map((s) => (
+                    <option key={s} value={s}>
+                      {s.replace("_", " ")}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Location + Capacity row */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Location <span className="text-red-500">*</span>
+                </label>
+                <input
+                  name="location"
+                  value={values.location}
+                  onChange={onChange}
+                  placeholder="e.g. Block B, Floor 2"
+                  required
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Capacity
+                </label>
+                <input
+                  name="capacity"
+                  value={values.capacity}
+                  onChange={onChange}
+                  placeholder="e.g. 30"
+                  type="number"
+                  min="1"
+                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                />
+              </div>
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Description
+              </label>
+              <textarea
+                name="description"
+                value={values.description}
+                onChange={onChange}
+                placeholder="Optional notes about this facility…"
+                rows={3}
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+              />
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
+                {error}
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors"
+              >
+                {loading ? "Saving…" : isEdit ? "Update Facility" : "Create Facility"}
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/facilities")}
+                className="text-sm text-gray-500 hover:text-gray-700 px-4 py-2.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+
+          </form>
+        </div>
       </div>
-    </form>
+    </div>
   );
 }

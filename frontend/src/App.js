@@ -9,11 +9,20 @@ import Home from "./pages/Home";
 // Pages — standalone with DashboardNavbar+Footer
 import Dashboard from "./pages/Dashboard";
 
-// ── User module pages (src/modules/user/pages/) ────────────────────────────
+// ── User module pages ──────────────────────────────────────────────────────
 import UserProfile from "./modules/user/pages/UserProfile";
 import UpdateProfile from "./modules/user/pages/UpdateProfile";
 import Register from "./modules/user/pages/Register";
 import Login from "./modules/user/pages/Login";
+
+// ── Facility module pages ──────────────────────────────────────────────────
+import FacilityList from "./modules/facility/pages/FacilityList";
+import FacilityForm from "./modules/facility/pages/FacilityForm";
+
+// ── Booking module pages ───────────────────────────────────────────────────
+import BookingForm from "./modules/booking/pages/BookingForm";
+import MyBookings from "./modules/booking/pages/MyBookings";
+import AdminBookings from "./modules/booking/pages/AdminBookings";
 
 import "./App.css";
 
@@ -21,19 +30,32 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* ── Landing page (standalone landing Navbar) ───────────────── */}
+        {/* ── Landing ───────────────────────────────────────────────── */}
         <Route path="/" element={<Home />} />
 
-        {/* ── App pages (standalone — use DashboardNavbar + DashboardFooter) */}
+        {/* ── App pages ─────────────────────────────────────────────── */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/userProfile" element={<UserProfile />} />
 
-        {/* ── Inner page still in MainLayout (landing Navbar) ───────── */}
+        {/* ── Facility routes ───────────────────────────────────────── */}
+        <Route path="/facilities" element={<FacilityList />} />
+        <Route path="/facilities/new" element={<FacilityForm />} />
+        <Route
+          path="/facilities/edit/:id"
+          element={<FacilityForm />}
+        />
+
+        {/* ── Booking routes ────────────────────────────────────────── */}
+        <Route path="/bookings/new" element={<BookingForm />} />
+        <Route path="/my-bookings" element={<MyBookings />} />
+        <Route path="/admin/bookings" element={<AdminBookings />} />
+
+        {/* ── Inner pages in MainLayout ─────────────────────────────── */}
         <Route element={<MainLayout />}>
           <Route path="/updateProfile/:id" element={<UpdateProfile />} />
         </Route>
 
-        {/* ── Auth routes (full-screen standalone) ──────────────────── */}
+        {/* ── Auth ──────────────────────────────────────────────────── */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
