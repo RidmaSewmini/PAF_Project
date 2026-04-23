@@ -229,8 +229,7 @@ public class UserController {
 
     // ── Profile and Password Endpoints ─────────────────────────────────────
 
-    @Autowired
-    private NotificationService notificationService;
+
 
     @PutMapping("/users/{id}/profile")
     public UserModel updateUserProfile(

@@ -10,17 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-/**
- * Explicit MongoDB configuration.
- *
- * Spring Boot 4.x auto-configuration does not reliably parse mongodb+srv://
- * URIs through the spring.data.mongodb.uri property when combined with the
- * sync MongoDB driver 5.x — the auto-configured MongoClient falls back to
- * localhost:27017. This bean takes full control of MongoClient creation,
- * reading the URI directly from application.properties and constructing
- * MongoClientSettings explicitly so the SRV DNS lookup and Atlas TLS
- * handshake work correctly.
- */
 @Configuration
 @EnableMongoRepositories(basePackages = {"backend.Repository", "backend.notification", "backend.audit", "backend.settings"})
 public class MongoConfig extends AbstractMongoClientConfiguration {
