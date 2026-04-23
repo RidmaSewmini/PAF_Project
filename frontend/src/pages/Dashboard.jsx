@@ -1,8 +1,8 @@
-import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import DashboardNavbar from "../components/layout/DashboardNavbar";
 import DashboardFooter from "../components/layout/DashboardFooter";
+import DashboardWithSidebar from "../components/layout/DashboardWithSidebar";
 
 // ─── Mock data (replace with real API calls as backend evolves) ───────────────
 const STATS = [
@@ -173,23 +173,28 @@ const GlassCard = ({ children, className = "", hover = false }) => (
 
 // ─── Main Dashboard ──────────────────────────────────────────────────────────
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "USER") {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   return (
-    <div className="min-h-screen flex flex-col bg-surface relative overflow-x-hidden">
+    <DashboardWithSidebar>
       {/* Ambient background radial glows */}
       <div
-        className="fixed top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none opacity-[0.07]"
+        className="fixed top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none opacity-[0.07] z-0"
         style={{ background: "radial-gradient(circle, #5b3cdd 0%, transparent 70%)", filter: "blur(80px)" }}
       />
       <div
-        className="fixed bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-[0.06]"
+        className="fixed bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-[0.06] z-0"
         style={{ background: "radial-gradient(circle, #a12e70 0%, transparent 70%)", filter: "blur(80px)" }}
       />
 
-      {/* ── Navbar ─────────────────────────────────────────────────────── */}
-      <DashboardNavbar />
-
-      {/* ── Page body ──────────────────────────────────────────────────── */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
+      <div className="relative z-10 w-full">
 
         {/* ── Hero Header ──────────────────────────────────────────────── */}
         <motion.div
@@ -198,7 +203,7 @@ const Dashboard = () => {
           transition={{ duration: 0.6 }}
           className="mb-8"
         >
-          <h1 className="font-headline text-4xl font-extrabold text-on-surface tracking-tight mb-1.5">
+          <h1 className="font-titillium text-4xl font-extrabold text-on-surface tracking-tight mb-1.5">
             Dashboard
           </h1>
           <p className="text-sm text-on-surface/55">
@@ -221,11 +226,11 @@ const Dashboard = () => {
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${stat.color}`}>
                   {stat.icon}
                 </div>
-                <span className="font-headline font-extrabold text-3xl text-on-surface leading-none">
+                <span className="font-titillium font-extrabold text-3xl text-on-surface leading-none">
                   {stat.value}
                 </span>
               </div>
-              <p className="font-headline font-bold text-sm text-on-surface mb-0.5">{stat.label}</p>
+              <p className="font-titillium font-bold text-sm text-on-surface mb-0.5">{stat.label}</p>
               <p className="text-[11px] text-on-surface/45">{stat.sub}</p>
             </motion.div>
           ))}
@@ -238,7 +243,7 @@ const Dashboard = () => {
           <Section className="lg:col-span-2" id="bookings">
             <GlassCard className="p-0 overflow-hidden">
               <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-surface-container-highest/60">
-                <h2 className="font-headline font-bold text-base text-on-surface">Upcoming Bookings</h2>
+                <h2 className="font-titillium font-bold text-base text-on-surface">Upcoming Bookings</h2>
                 <Link
                   to="/dashboard"
                   className="text-xs font-semibold text-primary hover:text-primary-container transition-colors flex items-center gap-1"
@@ -290,7 +295,7 @@ const Dashboard = () => {
           {/* Right: Quick Actions + Image Card (1/3 width) */}
           <Section className="flex flex-col gap-4">
             <GlassCard className="p-5">
-              <h2 className="font-headline font-bold text-base text-on-surface mb-4">Quick Actions</h2>
+              <h2 className="font-titillium font-bold text-base text-on-surface mb-4">Quick Actions</h2>
               <div className="space-y-3">
                 {QUICK_ACTIONS.map((action) => (
                   <Link to={action.to} key={action.label}>
@@ -324,7 +329,7 @@ const Dashboard = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4">
-                <p className="editorial-text text-white text-sm leading-snug">
+                <p className="font-aldrich text-white text-sm leading-snug">
                   Empowering your academic journey through seamless operations.
                 </p>
               </div>
@@ -339,7 +344,7 @@ const Dashboard = () => {
           <Section className="lg:col-span-2" id="tickets">
             <GlassCard className="p-0 overflow-hidden">
               <div className="px-6 pt-5 pb-4 border-b border-surface-container-highest/60">
-                <h2 className="font-headline font-bold text-base text-on-surface">Recent Tickets</h2>
+                <h2 className="font-titillium font-bold text-base text-on-surface">Recent Tickets</h2>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -391,7 +396,7 @@ const Dashboard = () => {
           {/* Right: Activity Feed (1/3) */}
           <Section>
             <GlassCard className="p-5 flex flex-col h-full">
-              <h2 className="font-headline font-bold text-base text-on-surface mb-4">Activity</h2>
+              <h2 className="font-titillium font-bold text-base text-on-surface mb-4">Activity</h2>
               <div className="space-y-3 flex-1">
                 {ACTIVITY.map((item, i) => (
                   <motion.div
@@ -423,11 +428,9 @@ const Dashboard = () => {
             </GlassCard>
           </Section>
         </div>
-      </main>
-
-      {/* ── Footer ─────────────────────────────────────────────────────── */}
+      </div>
       <DashboardFooter />
-    </div>
+    </DashboardWithSidebar>
   );
 };
 

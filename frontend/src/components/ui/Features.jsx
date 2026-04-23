@@ -77,9 +77,9 @@ const Features = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="font-headline text-4xl font-extrabold text-on-surface mb-4 tracking-tight">
+          <h2 className="font-titillium text-4xl font-extrabold text-on-surface mb-4 tracking-tight">
             Everything You Need to{" "}
-            <span className="editorial-text gradient-text">Manage</span> Campus
+            <span className="font-aldrich gradient-text">Manage</span> Campus
             Resources
           </h2>
           <p className="text-base text-on-surface/55 max-w-2xl mx-auto leading-relaxed">
@@ -105,7 +105,7 @@ const Features = () => {
               >
                 {feature.icon}
               </div>
-              <h3 className="font-headline font-bold text-base text-on-surface mb-2">
+              <h3 className="font-titillium font-bold text-base text-on-surface mb-2">
                 {feature.title}
               </h3>
               <p className="text-sm text-on-surface/55 leading-relaxed">

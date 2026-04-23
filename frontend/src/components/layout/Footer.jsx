@@ -1,4 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const footerLinks = {
   About: [
@@ -44,7 +46,27 @@ const socialIcons = [
 ];
 
 const Footer = () => {
-  const year = new Date().getFullYear();
+  const [settings, setSettings] = useState({
+    footerText: "© " + new Date().getFullYear() + " CampusFlow • Your Campus, Streamlined. All rights reserved.",
+    contactInfo: "support@campusflow.io"
+  });
+
+  useEffect(() => {
+    const cached = sessionStorage.getItem("app_settings");
+    if (cached) {
+      setSettings(JSON.parse(cached));
+    } else {
+      axios.get("http://localhost:8080/admin/settings")
+        .then(res => {
+           setSettings({
+             footerText: res.data.footerText || settings.footerText,
+             contactInfo: res.data.contactInfo || settings.contactInfo
+           });
+           sessionStorage.setItem("app_settings", JSON.stringify(res.data));
+        })
+        .catch(err => console.error("Could not fetch settings", err));
+    }
+  }, []);
 
   return (
     <footer className="bg-surface-container-lowest border-t border-surface-container-highest">
@@ -68,7 +90,7 @@ const Footer = () => {
                   />
                 </svg>
               </div>
-              <span className="font-headline font-bold text-base text-on-surface">
+              <span className="font-titillium font-bold text-base text-on-surface">
                 Campus<span className="text-primary">Flow</span>
               </span>
             </Link>
@@ -94,7 +116,7 @@ const Footer = () => {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([group, links]) => (
             <div key={group}>
-              <h4 className="font-headline font-bold text-xs tracking-widest text-on-surface uppercase mb-4">
+              <h4 className="font-titillium font-bold text-xs tracking-widest text-on-surface uppercase mb-4">
                 {group}
               </h4>
               <ul className="space-y-2.5">
@@ -114,14 +136,14 @@ const Footer = () => {
 
           {/* Contact column */}
           <div>
-            <h4 className="font-headline font-bold text-xs tracking-widest text-on-surface uppercase mb-4">
+            <h4 className="font-titillium font-bold text-xs tracking-widest text-on-surface uppercase mb-4">
               Contact
             </h4>
             <a
-              href="mailto:support@campusflow.io"
+              href={`mailto:${settings.contactInfo}`}
               className="text-sm text-on-surface/50 hover:text-primary transition-colors duration-200 block"
             >
-              support@campusflow.io
+              {settings.contactInfo}
             </a>
             <div className="flex items-center gap-3 mt-4">
               {socialIcons.map((s) => (
@@ -141,7 +163,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-surface-container-highest flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-xs text-on-surface/40">
-            © {year} CampusFlow • Your Campus, Streamlined. All rights reserved.
+            {settings.footerText}
           </p>
           <div className="flex items-center gap-5">
             <Link to="/" className="text-xs text-on-surface/40 hover:text-primary transition-colors">

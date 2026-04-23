@@ -58,10 +58,10 @@ const CTA = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.25, duration: 0.65 }}
-            className="font-headline text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-4"
+            className="font-titillium text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-4"
           >
             Start Managing Your{" "}
-            <span className="editorial-text opacity-90">Campus Experience</span>{" "}
+            <span className="font-aldrich opacity-90">Campus Experience</span>{" "}
             Today
           </motion.h2>
 

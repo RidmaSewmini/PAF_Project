@@ -15,9 +15,10 @@ module.exports = {
         "on-surface": "#121c2c",
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        headline: ["Manrope", "sans-serif"],
+        sans: ["Titillium Web", "sans-serif"],
         editorial: ['"Instrument Serif"', "serif"],
+        titillium: ['"Titillium Web"', "sans-serif"],
+        aldrich: ["Aldrich", "sans-serif"],
       },
       backgroundImage: {
         "brand-gradient": "linear-gradient(135deg, #5b3cdd 0%, #7459f7 100%)",

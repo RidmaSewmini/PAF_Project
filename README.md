@@ -15,20 +15,21 @@ This project is a **Full Stack Web Application** built using:
 | Branch    | Purpose                               | Who Can Push              |
 |-----------|----------------------------------------|---------------------------|
 | `main`    | Production-ready stable code           | ❌ DO NOT PUSH DIRECTLY   |
-| `develop` | Integration branch (combined features) | ✅ Via Pull Request (PR)  |
-| `auth`    | auth-notifications-role-management          | 👤 Ridma             |
-| `booking` | booking-management                  | 👤 Arindu              |
-| `ticketing` | ticketing-system               | 👤 Sabra              |
+| `dev` | Integration branch (combined features) | ✅ Via Pull Request (PR)  |
+| `authentication`    | auth-notifications-role-management          | 👤 Achindu             |
+| `facilities_resources` | booking-management                  | 👤 Kalindu               |
+| `booking_system` | booking-management                  | 👤 Shalini               |
+| `incident_ticketing` | ticketing-system               | 👤 Deshan              |
 
 ---
 
 ## ⚠️ Important Rules
 
 - ❌ Never push directly to `main`
-- ❌ Never push directly to `develop`
+- ❌ Never push directly to `dev`
 - ✅ Always work in your assigned branch
 - ✅ Always create a Pull Request (PR)
-- ✅ `main` should only be updated from `develop`
+- ✅ `main` should only be updated from `dev`
 
 ---
 
@@ -90,7 +91,7 @@ Install these extensions in VS Code:
 Open terminal and run:
 
 ```bash
-git clone https://github.com/RidmaSewmini/PAFProject.git
+git clone https://github.com/AchinduW/EduNexus.git
 cd PAFProject
 ```
 

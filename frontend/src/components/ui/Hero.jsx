@@ -35,7 +35,7 @@ const DashboardCard = ({ label, value, color, delay }) => (
   >
     <div className={`w-2 h-2 rounded-full mb-2 ${color}`} />
     <p className="text-xs text-on-surface/50">{label}</p>
-    <p className="text-base font-bold font-headline text-on-surface mt-0.5">{value}</p>
+    <p className="text-base font-bold font-titillium text-on-surface mt-0.5">{value}</p>
   </motion.div>
 );
 
@@ -92,11 +92,11 @@ const Hero = () => {
             {/* Headline */}
             <motion.h1
               variants={itemVariants}
-              className="font-headline text-5xl sm:text-6xl font-extrabold text-on-surface leading-[1.1] tracking-tight mb-6"
+              className="font-titillium text-5xl sm:text-6xl font-extrabold text-on-surface leading-[1.1] tracking-tight mb-6"
             >
               Smart Campus
               <br />
-              <span className="editorial-text gradient-text">Operations</span>{" "}
+              <span className="font-aldrich gradient-text">Operations</span>{" "}
               Made Simple
             </motion.h1>
 
@@ -152,7 +152,7 @@ const Hero = () => {
                 { value: "99.9%", label: "Uptime" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p className="font-headline text-2xl font-bold text-primary">
+                  <p className="font-titillium text-2xl font-bold text-primary">
                     {stat.value}
                   </p>
                   <p className="text-xs text-on-surface/50 mt-0.5">{stat.label}</p>

@@ -1,25 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
+import { Bell } from "lucide-react";
 
 const DashboardNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [userName, setUserName] = useState("");
   const [notifOpen, setNotifOpen] = useState(false);
   const [unread] = useState(3);
-
-  // Fetch logged-in user name from backend
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId) {
-      axios
-        .get(`http://localhost:8080/users/${userId}`)
-        .then((res) => setUserName(res.data.name || "User"))
-        .catch(() => setUserName("User"));
-    }
-  }, []);
+  const { user } = useAuth();
 
   const handleLogout = () => {
     localStorage.removeItem("userId");
@@ -31,12 +21,13 @@ const DashboardNavbar = () => {
     { to: "/dashboard", label: "Home" },
     { to: "/dashboard#bookings", label: "Bookings" },
     { to: "/dashboard#tickets", label: "Tickets" },
-    { to: "/userProfile", label: "Profile" },
+    { to: "/profile", label: "Profile" },
   ];
 
   const isActive = (to) => location.pathname === to.split("#")[0];
 
-  const firstName = userName.split(" ")[0] || "User";
+  const firstName = user?.name ? user.name.split(" ")[0] : "User";
+  const profileImageUrl = user?.profileImageUrl;
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-surface-container-highest">
@@ -49,7 +40,7 @@ const DashboardNavbar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L1 9l11 6 11-6-11-6zM1 17l11 6 11-6M1 13l11 6 11-6" />
               </svg>
             </div>
-            <span className="font-headline font-extrabold text-base text-on-surface tracking-tight">
+            <span className="font-titillium font-extrabold text-base text-on-surface tracking-tight">
               Campus<span className="text-primary">Flow</span>
             </span>
           </Link>
@@ -82,7 +73,7 @@ const DashboardNavbar = () => {
             {/* Greeting */}
             <span className="hidden sm:block text-sm text-on-surface/60">
               Hello,{" "}
-              <span className="editorial-text text-primary text-base font-medium">
+              <span className="font-aldrich text-primary text-base font-medium">
                 {firstName}!
               </span>
             </span>
@@ -94,9 +85,7 @@ const DashboardNavbar = () => {
                 className="relative w-9 h-9 rounded-xl bg-surface-container-low hover:bg-surface-container-highest flex items-center justify-center text-on-surface/50 hover:text-primary transition-all duration-200"
                 aria-label="Notifications"
               >
-                <svg className="w-4.5 h-4.5 w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                </svg>
+                <Bell className="w-5 h-5 text-current" />
                 {unread > 0 && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-tertiary text-white text-[9px] font-bold flex items-center justify-center">
                     {unread}
@@ -139,9 +128,13 @@ const DashboardNavbar = () => {
             </div>
 
             {/* Avatar */}
-            <Link to="/userProfile">
-              <div className="w-8 h-8 rounded-xl bg-brand-gradient flex items-center justify-center text-white text-sm font-bold shadow-sm hover:scale-110 transition-transform">
-                {firstName.charAt(0).toUpperCase()}
+            <Link to="/profile">
+              <div className="w-8 h-8 rounded-xl bg-brand-gradient flex items-center justify-center text-white text-sm font-bold shadow-sm hover:scale-110 transition-transform overflow-hidden relative">
+                {profileImageUrl ? (
+                   <img src={profileImageUrl} alt="profile" className="w-full h-full object-cover" />
+                ) : (
+                   firstName.charAt(0).toUpperCase()
+                )}
               </div>
             </Link>
 

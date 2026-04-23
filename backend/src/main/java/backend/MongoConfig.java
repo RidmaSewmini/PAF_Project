@@ -22,7 +22,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  * handshake work correctly.
  */
 @Configuration
-@EnableMongoRepositories(basePackages = "backend.Repository")
+@EnableMongoRepositories(basePackages = {"backend.Repository", "backend.notification", "backend.audit", "backend.settings"})
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.uri}")
