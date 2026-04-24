@@ -2,9 +2,9 @@
 
 This project is a **Full Stack Web Application** built using:
 
-* 🔹 **Backend**: Spring Boot (Java, Maven)
-* 🔹 **Frontend**: React.js + Tailwind CSS
-* 🔹 **Database**: MongoDB Atlas
+- 🔹 **Backend**: Spring Boot (Java, Maven)
+- 🔹 **Frontend**: React.js + Tailwind CSS
+- 🔹 **Database**: MongoDB Atlas
 
 ---
 
@@ -12,24 +12,23 @@ This project is a **Full Stack Web Application** built using:
 
 ## 📌 Branch Structure Overview
 
-| Branch    | Purpose                               | Who Can Push              |
-|-----------|----------------------------------------|---------------------------|
-| `main`    | Production-ready stable code           | ❌ DO NOT PUSH DIRECTLY   |
-| `dev` | Integration branch (combined features) | ✅ Via Pull Request (PR)  |
-| `authentication`    | auth-notifications-role-management          | 👤 Achindu             |
-| `facilities_resources` | booking-management                  | 👤 Kalindu               |
-| `booking_system` | booking-management                  | 👤 Shalini               |
-| `incident_ticketing` | ticketing-system               | 👤 Deshan              |
+| Branch      | Purpose                                | Who Can Push             |
+| ----------- | -------------------------------------- | ------------------------ |
+| `main`      | Production-ready stable code           | ❌ DO NOT PUSH DIRECTLY  |
+| `develop`   | Integration branch (combined features) | ✅ Via Pull Request (PR) |
+| `auth`      | auth-notifications-role-management     | 👤 Ridma                 |
+| `booking`   | booking-management                     | 👤 Arindu                |
+| `ticketing` | ticketing-system                       | 👤 Sabra                 |
 
 ---
 
 ## ⚠️ Important Rules
 
 - ❌ Never push directly to `main`
-- ❌ Never push directly to `dev`
+- ❌ Never push directly to `develop`
 - ✅ Always work in your assigned branch
 - ✅ Always create a Pull Request (PR)
-- ✅ `main` should only be updated from `dev`
+- ✅ `main` should only be updated from `develop`
 
 ---
 
@@ -39,8 +38,8 @@ Before running this project, make sure your system has the following installed:
 
 ## 🔹 1. Java Development Kit (JDK)
 
-* Version: **JDK 17 or above** (Recommended: JDK 21 or 23)
-* Check installation:
+- Version: **JDK 17 or above** (Recommended: JDK 21 or 23)
+- Check installation:
 
 ```bash
 java -version
@@ -50,8 +49,8 @@ java -version
 
 ## 🔹 2. Node.js & npm
 
-* Install Node.js (LTS version recommended)
-* Check:
+- Install Node.js (LTS version recommended)
+- Check:
 
 ```bash
 node -v
@@ -68,8 +67,8 @@ Maven wrapper is included, so no need to install manually.
 
 ## 🔹 4. MongoDB Atlas Account
 
-* Accept the invitaton and joined the cluster PAF_Project
-* Get your **MongoDB connection URI**
+- Accept the invitaton and joined the cluster PAF_Project
+- Get your **MongoDB connection URI**
 
 ---
 
@@ -77,12 +76,12 @@ Maven wrapper is included, so no need to install manually.
 
 Install these extensions in VS Code:
 
-* Java Extension Pack
-* Spring Boot Extension Pack
-* Maven for Java
-* ES7+ React/Redux Snippets
-* Tailwind CSS IntelliSense
-* Prettier (Code Formatter)
+- Java Extension Pack
+- Spring Boot Extension Pack
+- Maven for Java
+- ES7+ React/Redux Snippets
+- Tailwind CSS IntelliSense
+- Prettier (Code Formatter)
 
 ---
 
@@ -91,7 +90,7 @@ Install these extensions in VS Code:
 Open terminal and run:
 
 ```bash
-git clone https://github.com/AchinduW/EduNexus.git
+git clone https://github.com/RidmaSewmini/PAFProject.git
 cd PAFProject
 ```
 
@@ -182,9 +181,9 @@ PAFProject/
 
 # 🔒 Security Notes
 
-* ❌ Do NOT commit `.env` files
-* ❌ Do NOT expose MongoDB credentials
-* ✅ Use environment variables for sensitive data
+- ❌ Do NOT commit `.env` files
+- ❌ Do NOT expose MongoDB credentials
+- ✅ Use environment variables for sensitive data
 
 ---
 
@@ -220,15 +219,15 @@ npm install
 
 # 👨‍💻 Author
 
-* Developed as part of **PAF (Programming Applications Framework)** module
+- Developed as part of **PAF (Programming Applications Framework)** module
 
 ---
 
 # ⭐ Final Notes
 
-* Make sure backend is running before frontend
-* Ensure MongoDB URI is correct
-* Use latest stable tools for best performance
+- Make sure backend is running before frontend
+- Ensure MongoDB URI is correct
+- Use latest stable tools for best performance
 
 ---
 
