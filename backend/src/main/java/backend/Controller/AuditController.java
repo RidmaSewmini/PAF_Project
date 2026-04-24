@@ -1,6 +1,11 @@
-package backend.audit;
+package backend.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import backend.Repository.AuditLogRepository;
+import backend.service.AuditService;
+import backend.Model.AuditLog;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,7 @@
-package backend.settings;
+package backend.Controller;
+
+import backend.Repository.SettingsRepository;
+import backend.Model.Settings;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

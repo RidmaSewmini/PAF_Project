@@ -11,8 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import backend.email.EmailService;
-import backend.notification.NotificationService;
-import backend.audit.AuditService;
+import backend.service.NotificationService;
+import backend.service.AuditService;
 import backend.service.ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;

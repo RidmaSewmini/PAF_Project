@@ -1,9 +1,12 @@
-package backend.notification;
+package backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import backend.Repository.NotificationRepository;
+import backend.Model.Notification;
 
 import java.time.LocalDateTime;
 import java.util.List;
