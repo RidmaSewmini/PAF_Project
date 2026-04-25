@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.util.Map;
 
@@ -23,11 +27,23 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    // 1. POST /api/tickets: Create a new incident ticket. Returns 201 Created.
-    @PostMapping
-    public ResponseEntity<IncidentTicket> createTicket(@RequestBody IncidentTicket ticket) {
-        IncidentTicket createdTicket = ticketService.createTicket(ticket);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTicket);
+    // 1. POST /api/tickets: Create a new incident ticket with optional files. Returns 201 Created.
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createTicket(
+            @RequestPart("ticket") String ticketJson,
+            @RequestPart(value = "files", required = false) MultipartFile[] files) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            IncidentTicket ticket = mapper.readValue(ticketJson, IncidentTicket.class);
+            
+            IncidentTicket createdTicket = ticketService.createTicketWithFiles(ticket, files);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdTicket);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", e.getMessage()));
+        }
     }
 
     @GetMapping

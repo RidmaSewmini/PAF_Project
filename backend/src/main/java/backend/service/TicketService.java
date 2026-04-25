@@ -9,6 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TicketService {
@@ -23,6 +32,48 @@ public class TicketService {
     public IncidentTicket createTicket(IncidentTicket ticket) {
         ticket.setStatus(TicketStatus.OPEN);
         ticket.setCreatedAt(LocalDateTime.now());
+        return ticketRepository.save(ticket);
+    }
+
+    public IncidentTicket createTicketWithFiles(IncidentTicket ticket, MultipartFile[] files) throws IOException {
+        ticket.setStatus(TicketStatus.OPEN);
+        ticket.setCreatedAt(LocalDateTime.now());
+
+        List<String> attachmentUrls = new ArrayList<>();
+
+        if (files != null && files.length > 0) {
+            if (files.length > 3) {
+                throw new IllegalArgumentException("Maximum of 3 files allowed.");
+            }
+
+            String uploadDirStr = "uploads/tickets/";
+            File uploadDir = new File(uploadDirStr);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    String contentType = file.getContentType();
+                    if (contentType == null || (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
+                        throw new IllegalArgumentException("Only JPEG and PNG images are allowed.");
+                    }
+
+                    String originalFilename = file.getOriginalFilename();
+                    String extension = "";
+                    if (originalFilename != null && originalFilename.contains(".")) {
+                        extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                    }
+                    String uniqueFilename = UUID.randomUUID().toString() + extension;
+                    Path filePath = Paths.get(uploadDirStr + uniqueFilename);
+                    Files.write(filePath, file.getBytes());
+
+                    attachmentUrls.add("http://localhost:8080/uploads/tickets/" + uniqueFilename);
+                }
+            }
+        }
+
+        ticket.setAttachmentUrls(attachmentUrls);
         return ticketRepository.save(ticket);
     }
 
