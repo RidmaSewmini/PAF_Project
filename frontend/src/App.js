@@ -61,6 +61,9 @@ function App() {
             <Route path="/facilities" element={<FacilityList />} />
             <Route path="/facilities/new" element={<FacilityForm />} />
             <Route path="/facilities/edit/:id" element={<FacilityForm />} />
+            <Route path="/admin/facilities" element={<ProtectedAdminRoute><FacilityList /></ProtectedAdminRoute>} />
+            <Route path="/admin/facilities/new" element={<ProtectedAdminRoute><FacilityForm /></ProtectedAdminRoute>} />
+            <Route path="/admin/facilities/edit/:id" element={<ProtectedAdminRoute><FacilityForm /></ProtectedAdminRoute>} />
 
             {/* ── Booking routes ────────────────────────────────────────── */}
             <Route path="/bookings/new" element={<BookingForm />} />
