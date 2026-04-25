@@ -20,7 +20,11 @@ public class IncidentTicket {
     private String preferredContact;
     private LocalDateTime createdAt;
 
+    private String resolutionNotes;
+    private String technicianId;
+
     private List<String> attachmentUrls = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     public IncidentTicket() {
         this.createdAt = LocalDateTime.now();
@@ -104,5 +108,33 @@ public class IncidentTicket {
         } else {
             throw new IllegalStateException("Maximum of 3 attachment URLs allowed.");
         }
+    }
+
+    public String getResolutionNotes() {
+        return resolutionNotes;
+    }
+
+    public void setResolutionNotes(String resolutionNotes) {
+        this.resolutionNotes = resolutionNotes;
+    }
+
+    public String getTechnicianId() {
+        return technicianId;
+    }
+
+    public void setTechnicianId(String technicianId) {
+        this.technicianId = technicianId;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 }

@@ -4,7 +4,6 @@ import backend.Model.Notification;
 import backend.Repository.UserRepository;
 import backend.service.NotificationService;
 
-import backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
