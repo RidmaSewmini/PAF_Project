@@ -66,6 +66,10 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
+    public java.util.List<IncidentTicket> getAllTickets() {
+        return ticketRepository.findAll();
+    }
+
     public IncidentTicket getTicketById(String id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id: " + id));

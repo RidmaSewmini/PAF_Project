@@ -30,6 +30,11 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTicket);
     }
 
+    @GetMapping
+    public ResponseEntity<java.util.List<IncidentTicket>> getAllTickets() {
+        return ResponseEntity.ok(ticketService.getAllTickets());
+    }
+
     // 2. GET /api/tickets/{id}: Retrieve specific ticket details. Returns 200 OK or 404 Not Found.
     @GetMapping("/{id}")
     public ResponseEntity<IncidentTicket> getTicketById(@PathVariable String id) {
