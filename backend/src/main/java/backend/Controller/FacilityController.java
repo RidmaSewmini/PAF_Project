@@ -1,7 +1,7 @@
 package backend.Controller;
 
 import backend.Model.FacilityModel;
-import backend.Service.FacilityService;
+import backend.service.FacilityService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

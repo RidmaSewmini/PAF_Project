@@ -1,4 +1,4 @@
-package backend.Service;
+package backend.service;
 
 import backend.Model.BookingModel;
 import backend.Repository.BookingRepository;

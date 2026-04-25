@@ -1,4 +1,4 @@
-package backend.Service;
+package backend.service;
 
 import backend.Model.FacilityModel;
 import backend.Repository.FacilityRepository;

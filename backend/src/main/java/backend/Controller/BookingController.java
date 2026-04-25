@@ -1,7 +1,7 @@
 package backend.Controller;
 
 import backend.Model.BookingModel;
-import backend.Service.BookingService;
+import backend.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
