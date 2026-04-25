@@ -13,6 +13,7 @@ import Dashboard from "./modules/user/pages/Dashboard";
 import UpdateProfile from "./modules/user/pages/UpdateProfile";
 import Register from "./modules/user/pages/Register";
 import Login from "./modules/user/pages/Login";
+import UserProfile from "./modules/user/pages/UserProfile";
 import ForgotPassword from "./modules/user/pages/ForgotPassword";
 import ResetPassword from "./modules/user/pages/ResetPassword";
 import VerifyEmailPage from "./modules/user/pages/VerifyEmailPage";
@@ -27,6 +28,15 @@ import NotificationsPage from "./modules/notification/pages/NotificationsPage";
 import AdminUsersPage from "./modules/admin/pages/AdminUsersPage";
 import AdminAuditPage from "./modules/admin/pages/AdminAuditPage";
 import AdminSettingsPage from "./modules/admin/pages/AdminSettingsPage";
+
+// ── Facility module pages ──────────────────────────────────────────────────
+import FacilityList from "./modules/facility/pages/FacilityList";
+import FacilityForm from "./modules/facility/pages/FacilityForm";
+
+// ── Booking module pages ───────────────────────────────────────────────────
+import BookingForm from "./modules/booking/pages/BookingForm";
+import MyBookings from "./modules/booking/pages/MyBookings";
+import AdminBookings from "./modules/booking/pages/AdminBookings";
 
 import "./App.css";
 
@@ -47,6 +57,23 @@ function App() {
             {/* ── App pages (standalone — use DashboardNavbar + DashboardFooter) */}
             <Route path="/dashboard" element={<Dashboard />} />
 
+            {/* ── Facility routes ───────────────────────────────────────── */}
+            <Route path="/facilities" element={<FacilityList />} />
+            <Route path="/facilities/new" element={<FacilityForm />} />
+            <Route path="/facilities/edit/:id" element={<FacilityForm />} />
+
+            {/* ── Booking routes ────────────────────────────────────────── */}
+            <Route path="/bookings/new" element={<BookingForm />} />
+            <Route path="/my-bookings" element={<MyBookings />} />
+            <Route
+              path="/admin/bookings"
+              element={
+                <ProtectedAdminRoute>
+                  <AdminBookings />
+                </ProtectedAdminRoute>
+              }
+            />
+
             {/* ── Inner page still in MainLayout (landing Navbar) ───────── */}
             <Route element={<MainLayout />}>
               <Route path="/updateProfile/:id" element={<UpdateProfile />} />
@@ -65,6 +92,7 @@ function App() {
 
             {/* ── Extracted modern profile routes ────────────────────────────── */}
             <Route path="/profile" element={<UserProfilePage />} />
+            <Route path="/userProfile" element={<UserProfile />} />
             <Route path="/admin/profile" element={<AdminProfilePage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/admin/notifications" element={<ProtectedAdminRoute><NotificationsPage /></ProtectedAdminRoute>} />

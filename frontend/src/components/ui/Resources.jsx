@@ -52,7 +52,7 @@ const ResourceCard = ({ resource, index, isInView }) => (
 
     {/* Text content */}
     <div className="absolute bottom-0 left-0 right-0 p-5">
-      <h3 className="font-titillium font-bold text-white text-base leading-tight">
+      <h3 className="font-headline font-bold text-white text-base leading-tight">
         {resource.title}
       </h3>
       <p className="text-white/70 text-xs mt-1">{resource.description}</p>
@@ -83,9 +83,9 @@ const Resources = () => {
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10"
         >
           <div>
-            <h2 className="font-titillium text-4xl font-extrabold text-on-surface tracking-tight">
+            <h2 className="font-headline text-4xl font-extrabold text-on-surface tracking-tight">
               Explore{" "}
-              <span className="font-aldrich gradient-text">Campus</span>{" "}
+              <span className="editorial-text gradient-text">Campus</span>{" "}
               Resources
             </h2>
             <p className="text-sm text-on-surface/50 mt-2">

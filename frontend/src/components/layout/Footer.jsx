@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -47,25 +47,32 @@ const socialIcons = [
 
 const Footer = () => {
   const [settings, setSettings] = useState({
-    footerText: "© " + new Date().getFullYear() + " CampusFlow • Your Campus, Streamlined. All rights reserved.",
-    contactInfo: "support@campusflow.io"
+    footerText:
+      "© " +
+      new Date().getFullYear() +
+      " CampusFlow • Your Campus, Streamlined. All rights reserved.",
+    contactInfo: "support@campusflow.io",
   });
 
   useEffect(() => {
     const cached = sessionStorage.getItem("app_settings");
     if (cached) {
       setSettings(JSON.parse(cached));
-    } else {
-      axios.get("http://localhost:8080/admin/settings")
-        .then(res => {
-           setSettings({
-             footerText: res.data.footerText || settings.footerText,
-             contactInfo: res.data.contactInfo || settings.contactInfo
-           });
-           sessionStorage.setItem("app_settings", JSON.stringify(res.data));
-        })
-        .catch(err => console.error("Could not fetch settings", err));
+      return;
     }
+
+    axios
+      .get("http://localhost:8080/admin/settings")
+      .then((res) => {
+        const next = {
+          footerText: res.data.footerText || settings.footerText,
+          contactInfo: res.data.contactInfo || settings.contactInfo,
+        };
+        setSettings(next);
+        sessionStorage.setItem("app_settings", JSON.stringify(next));
+      })
+      .catch((err) => console.error("Could not fetch settings", err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -90,15 +97,15 @@ const Footer = () => {
                   />
                 </svg>
               </div>
-              <span className="font-titillium font-bold text-base text-on-surface">
+              <span className="font-headline font-bold text-base text-on-surface">
                 Campus<span className="text-primary">Flow</span>
               </span>
             </Link>
+
             <p className="text-xs text-on-surface/50 leading-relaxed max-w-[200px]">
               Making campus communications efficient and accessible for everyone.
             </p>
 
-            {/* Socials */}
             <div className="flex items-center gap-3 mt-6">
               {socialIcons.map((s) => (
                 <a
@@ -116,7 +123,7 @@ const Footer = () => {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([group, links]) => (
             <div key={group}>
-              <h4 className="font-titillium font-bold text-xs tracking-widest text-on-surface uppercase mb-4">
+              <h4 className="font-headline font-bold text-xs tracking-widest text-on-surface uppercase mb-4">
                 {group}
               </h4>
               <ul className="space-y-2.5">
@@ -136,7 +143,7 @@ const Footer = () => {
 
           {/* Contact column */}
           <div>
-            <h4 className="font-titillium font-bold text-xs tracking-widest text-on-surface uppercase mb-4">
+            <h4 className="font-headline font-bold text-xs tracking-widest text-on-surface uppercase mb-4">
               Contact
             </h4>
             <a
@@ -162,14 +169,18 @@ const Footer = () => {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-surface-container-highest flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-xs text-on-surface/40">
-            {settings.footerText}
-          </p>
+          <p className="text-xs text-on-surface/40">{settings.footerText}</p>
           <div className="flex items-center gap-5">
-            <Link to="/" className="text-xs text-on-surface/40 hover:text-primary transition-colors">
+            <Link
+              to="/"
+              className="text-xs text-on-surface/40 hover:text-primary transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link to="/" className="text-xs text-on-surface/40 hover:text-primary transition-colors">
+            <Link
+              to="/"
+              className="text-xs text-on-surface/40 hover:text-primary transition-colors"
+            >
               Terms of Service
             </Link>
           </div>
