@@ -61,7 +61,7 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
   const isEdit = Boolean(facilityId);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-surface py-10 px-4">
       <div className="max-w-2xl mx-auto">
 
         {/* Header */}
@@ -69,14 +69,14 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
           <button
             type="button"
             onClick={() => navigate("/facilities")}
-            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-4 transition-colors"
+            className="flex items-center gap-1 text-sm text-on-surface/55 hover:text-on-surface mb-4 transition-colors"
           >
             ← Back to Facilities
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-on-surface">
             {isEdit ? "Edit Facility" : "Add New Facility"}
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-on-surface/55 mt-1">
             {isEdit
               ? "Update the details for this facility."
               : "Fill in the details to register a new facility."}
@@ -84,12 +84,12 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div className="glass-panel rounded-3xl shadow-card border border-surface-container-highest p-8">
           <form onSubmit={onSubmit} className="space-y-6">
 
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-on-surface/70 mb-1">
                 Facility Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -98,14 +98,14 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
                 onChange={onChange}
                 placeholder="e.g. Computer Lab A"
                 required
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition"
               />
             </div>
 
             {/* Type + Status row */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-on-surface/70 mb-1">
                   Type <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -113,7 +113,7 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
                   value={values.type}
                   onChange={onChange}
                   required
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
+                  className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition"
                 >
                   <option value="">Select type…</option>
                   {FACILITY_TYPES.map((t) => (
@@ -125,14 +125,14 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-on-surface/70 mb-1">
                   Status
                 </label>
                 <select
                   name="status"
                   value={values.status}
                   onChange={onChange}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
+                  className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition"
                 >
                   {FACILITY_STATUSES.map((s) => (
                     <option key={s} value={s}>
@@ -146,7 +146,7 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
             {/* Location + Capacity row */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-on-surface/70 mb-1">
                   Location <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -155,12 +155,12 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
                   onChange={onChange}
                   placeholder="e.g. Block B, Floor 2"
                   required
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-on-surface/70 mb-1">
                   Capacity
                 </label>
                 <input
@@ -170,14 +170,14 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
                   placeholder="e.g. 30"
                   type="number"
                   min="1"
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition"
                 />
               </div>
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-on-surface/70 mb-1">
                 Description
               </label>
               <textarea
@@ -186,7 +186,7 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
                 onChange={onChange}
                 placeholder="Optional notes about this facility…"
                 rows={3}
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition resize-none"
               />
             </div>
 
@@ -202,14 +202,14 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors"
+                className="bg-primary hover:bg-primary-container disabled:opacity-60 text-white text-sm font-medium px-6 py-2.5 rounded-xl shadow-card transition-colors"
               >
                 {loading ? "Saving…" : isEdit ? "Update Facility" : "Create Facility"}
               </button>
               <button
                 type="button"
                 onClick={() => navigate("/facilities")}
-                className="text-sm text-gray-500 hover:text-gray-700 px-4 py-2.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                className="text-sm text-on-surface/60 hover:text-on-surface px-4 py-2.5 rounded-xl border border-surface-container-highest bg-surface-container-low hover:bg-surface-container-lowest transition-colors"
               >
                 Cancel
               </button>

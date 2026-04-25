@@ -13,10 +13,7 @@ const CTA = () => {
         initial={{ opacity: 0, y: 32, scale: 0.97 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
         transition={{ duration: 0.75, ease: "easeOut" }}
-        className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl"
-        style={{
-          background: "linear-gradient(135deg, #5b3cdd 0%, #7459f7 60%, #a12e70 100%)",
-        }}
+        className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl bg-brand-gradient"
       >
         {/* Background shimmer blobs */}
         <div
@@ -29,7 +26,7 @@ const CTA = () => {
         <div
           className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
           style={{
-            background: "radial-gradient(circle, #a12e70 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgb(var(--cf-accent)) 0%, transparent 70%)",
             filter: "blur(40px)",
           }}
         />

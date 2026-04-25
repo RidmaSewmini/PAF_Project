@@ -1,18 +1,25 @@
 /** @type {import('tailwindcss').Config} */
+const withOpacity = (cssVar) => ({ opacityValue } = {}) => {
+  if (opacityValue === undefined) return `rgb(var(${cssVar}))`;
+  return `rgb(var(${cssVar}) / ${opacityValue})`;
+};
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        primary: "#5b3cdd",
-        "primary-container": "#7459f7",
-        surface: "#f9f9ff",
-        "surface-container-low": "#f0f3ff",
-        "surface-container-highest": "#d9e3f9",
-        "surface-container-lowest": "#ffffff",
-        tertiary: "#a12e70",
-        secondary: "#674bb5",
-        "on-surface": "#121c2c",
+        // Palette-driven semantic tokens (see src/index.css)
+        primary: withOpacity("--cf-accent"),
+        "primary-container": withOpacity("--cf-navy"),
+        secondary: withOpacity("--cf-secondary"),
+        tertiary: withOpacity("--cf-slate"),
+        surface: withOpacity("--cf-surface"),
+        "surface-container-low": withOpacity("--cf-surface-soft"),
+        "surface-container-high": withOpacity("--cf-secondary-soft"),
+        "surface-container-highest": withOpacity("--cf-border"),
+        "surface-container-lowest": withOpacity("--cf-white"),
+        "on-surface": withOpacity("--cf-ink"),
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
@@ -20,9 +27,10 @@ module.exports = {
         editorial: ['"Instrument Serif"', "serif"],
       },
       backgroundImage: {
-        "brand-gradient": "linear-gradient(135deg, #5b3cdd 0%, #7459f7 100%)",
+        "brand-gradient":
+          "linear-gradient(135deg, rgb(var(--cf-navy)) 0%, rgb(var(--cf-secondary)) 60%, rgb(var(--cf-accent)) 100%)",
         "hero-gradient":
-          "linear-gradient(135deg, #f0f3ff 0%, #f9f9ff 60%, #e8e0fd 100%)",
+          "linear-gradient(135deg, rgb(var(--cf-surface)) 0%, rgb(var(--cf-white) / 0.85) 55%, rgb(var(--cf-secondary) / 0.35) 100%)",
       },
       borderRadius: {
         "2xl": "1rem",
@@ -30,9 +38,9 @@ module.exports = {
         "4xl": "2rem",
       },
       boxShadow: {
-        card: "0 4px 24px 0 rgba(91, 60, 221, 0.08)",
-        "card-hover": "0 12px 40px 0 rgba(91, 60, 221, 0.18)",
-        glass: "0 8px 32px 0 rgba(91, 60, 221, 0.12)",
+        card: "0 4px 24px 0 rgb(var(--cf-navy) / 0.10)",
+        "card-hover": "0 12px 40px 0 rgb(var(--cf-navy) / 0.18)",
+        glass: "0 8px 32px 0 rgb(var(--cf-navy) / 0.14)",
       },
       animation: {
         float: "float 4s ease-in-out infinite",

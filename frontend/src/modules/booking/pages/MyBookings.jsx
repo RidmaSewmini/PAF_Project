@@ -6,7 +6,7 @@ const STATUS_STYLES = {
   PENDING:   "bg-yellow-100 text-yellow-700",
   APPROVED:  "bg-green-100  text-green-700",
   REJECTED:  "bg-red-100    text-red-700",
-  CANCELLED: "bg-gray-100   text-gray-500",
+  CANCELLED: "bg-surface-container-low text-on-surface/50",
 };
 
 function formatDateTime(dt) {
@@ -68,27 +68,27 @@ export default function MyBookings() {
   // ── Loading state ──────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-sm text-gray-400">Loading your bookings…</p>
+      <div className="min-h-screen bg-surface flex items-center justify-center">
+        <p className="text-sm text-on-surface/45">Loading your bookings…</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-surface py-10 px-4">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">My Bookings</h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <h1 className="text-2xl font-bold text-on-surface">My Bookings</h1>
+            <p className="text-sm text-on-surface/55 mt-1">
               {bookings.length} booking{bookings.length !== 1 ? "s" : ""} found
             </p>
           </div>
           <button
             onClick={() => navigate("/bookings/new")}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors"
+            className="bg-primary hover:bg-primary-container text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-card transition-colors"
           >
             + New Booking
           </button>
@@ -103,11 +103,11 @@ export default function MyBookings() {
 
         {/* Empty state */}
         {!error && bookings.length === 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-            <p className="text-gray-400 text-sm">You have no bookings yet.</p>
+          <div className="glass-panel rounded-3xl border border-surface-container-highest shadow-card p-12 text-center">
+            <p className="text-on-surface/45 text-sm">You have no bookings yet.</p>
             <button
               onClick={() => navigate("/bookings/new")}
-              className="mt-4 text-sm text-blue-600 hover:underline"
+              className="mt-4 text-sm text-primary hover:underline"
             >
               Make your first booking →
             </button>
@@ -123,24 +123,24 @@ export default function MyBookings() {
             return (
               <div
                 key={booking.id}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6"
+                className="glass-panel rounded-3xl border border-surface-container-highest shadow-card p-6"
               >
                 {/* Top row: resource ID + status badge */}
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-sm font-semibold text-gray-800">
+                    <p className="text-sm font-semibold text-on-surface">
                       Facility:{" "}
-                      <span className="font-mono text-gray-600">
+                      <span className="font-mono text-on-surface/60">
                         {booking.resourceId}
                       </span>
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">
+                    <p className="text-xs text-on-surface/45 mt-0.5">
                       Booked on {formatDateTime(booking.createdAt)}
                     </p>
                   </div>
                   <span
                     className={`text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap ${
-                      STATUS_STYLES[booking.status] || "bg-gray-100 text-gray-500"
+                      STATUS_STYLES[booking.status] || "bg-surface-container-low text-on-surface/50"
                     }`}
                   >
                     {booking.status}
@@ -150,20 +150,20 @@ export default function MyBookings() {
                 {/* Details grid */}
                 <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <p className="text-xs text-gray-400">Start</p>
-                    <p className="text-gray-700">{formatDateTime(booking.startTime)}</p>
+                    <p className="text-xs text-on-surface/45">Start</p>
+                    <p className="text-on-surface/70">{formatDateTime(booking.startTime)}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400">End</p>
-                    <p className="text-gray-700">{formatDateTime(booking.endTime)}</p>
+                    <p className="text-xs text-on-surface/45">End</p>
+                    <p className="text-on-surface/70">{formatDateTime(booking.endTime)}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400">Purpose</p>
-                    <p className="text-gray-700">{booking.purpose || "—"}</p>
+                    <p className="text-xs text-on-surface/45">Purpose</p>
+                    <p className="text-on-surface/70">{booking.purpose || "—"}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400">Expected Attendees</p>
-                    <p className="text-gray-700">{booking.expectedAttendees || "—"}</p>
+                    <p className="text-xs text-on-surface/45">Expected Attendees</p>
+                    <p className="text-on-surface/70">{booking.expectedAttendees || "—"}</p>
                   </div>
                 </div>
 

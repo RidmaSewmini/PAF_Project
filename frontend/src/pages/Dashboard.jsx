@@ -64,7 +64,7 @@ const BOOKINGS = [
 ];
 
 const TICKETS = [
-  { id: "#CF-8921", resource: "3D Printer B-02", status: "In Progress", statusColor: "bg-blue-500", technician: "John Smith", techInitials: "JS", techColor: "bg-secondary" },
+  { id: "#CF-8921", resource: "3D Printer B-02", status: "In Progress", statusColor: "bg-secondary", technician: "John Smith", techInitials: "JS", techColor: "bg-secondary" },
   { id: "#CF-8944", resource: "Room 102 Projector", status: "Open", statusColor: "bg-red-500", technician: null, techInitials: null, techColor: null },
 ];
 
@@ -178,11 +178,11 @@ const Dashboard = () => {
       {/* Ambient background radial glows */}
       <div
         className="fixed top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none opacity-[0.07]"
-        style={{ background: "radial-gradient(circle, #5b3cdd 0%, transparent 70%)", filter: "blur(80px)" }}
+        style={{ background: "radial-gradient(circle, rgb(var(--cf-secondary)) 0%, transparent 70%)", filter: "blur(80px)" }}
       />
       <div
         className="fixed bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-[0.06]"
-        style={{ background: "radial-gradient(circle, #a12e70 0%, transparent 70%)", filter: "blur(80px)" }}
+        style={{ background: "radial-gradient(circle, rgb(var(--cf-accent)) 0%, transparent 70%)", filter: "blur(80px)" }}
       />
 
       {/* ── Navbar ─────────────────────────────────────────────────────── */}
@@ -237,7 +237,7 @@ const Dashboard = () => {
           {/* Left: Upcoming Bookings (2/3 width) */}
           <Section className="lg:col-span-2" id="bookings">
             <GlassCard className="p-0 overflow-hidden">
-              <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-surface-container-highest/60">
+              <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-surface-container-highest">
                 <h2 className="font-headline font-bold text-base text-on-surface">Upcoming Bookings</h2>
                 <Link
                   to="/dashboard"
@@ -261,14 +261,14 @@ const Dashboard = () => {
                       <th className="text-right text-[10px] font-bold tracking-widest text-on-surface/40 uppercase px-6 py-3">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-surface-container-highest/40">
+                  <tbody className="divide-y divide-surface-container-highest">
                     {BOOKINGS.map((b, i) => (
                       <motion.tr
                         key={b.id}
                         initial={{ opacity: 0, x: -12 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 + i * 0.07 }}
-                        className="hover:bg-surface-container-low/50 transition-colors duration-150"
+                        className="hover:bg-surface-container-low transition-colors duration-150"
                       >
                         <td className="px-6 py-4 text-sm font-medium text-on-surface">{b.resource}</td>
                         <td className="px-4 py-4 text-sm text-on-surface/60">{b.datetime}</td>
@@ -338,7 +338,7 @@ const Dashboard = () => {
           {/* Left: Recent Tickets (2/3) */}
           <Section className="lg:col-span-2" id="tickets">
             <GlassCard className="p-0 overflow-hidden">
-              <div className="px-6 pt-5 pb-4 border-b border-surface-container-highest/60">
+              <div className="px-6 pt-5 pb-4 border-b border-surface-container-highest">
                 <h2 className="font-headline font-bold text-base text-on-surface">Recent Tickets</h2>
               </div>
               <div className="overflow-x-auto">
@@ -351,14 +351,14 @@ const Dashboard = () => {
                       <th className="text-left text-[10px] font-bold tracking-widest text-on-surface/40 uppercase px-6 py-3">Technician</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-surface-container-highest/40">
+                  <tbody className="divide-y divide-surface-container-highest">
                     {TICKETS.map((t, i) => (
                       <motion.tr
                         key={t.id}
                         initial={{ opacity: 0, x: -12 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.15 + i * 0.07 }}
-                        className="hover:bg-surface-container-low/50 transition-colors duration-150"
+                        className="hover:bg-surface-container-low transition-colors duration-150"
                       >
                         <td className="px-6 py-4 text-sm font-mono font-semibold text-on-surface/70">{t.id}</td>
                         <td className="px-4 py-4 text-sm font-medium text-on-surface">{t.resource}</td>

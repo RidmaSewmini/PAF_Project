@@ -59,7 +59,7 @@ const Hero = () => {
         className="absolute top-20 right-0 w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, #7459f7 0%, transparent 70%)",
+            "radial-gradient(circle, rgb(var(--cf-secondary)) 0%, transparent 70%)",
           filter: "blur(60px)",
         }}
       />
@@ -67,7 +67,7 @@ const Hero = () => {
         className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-10 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, #5b3cdd 0%, transparent 70%)",
+            "radial-gradient(circle, rgb(var(--cf-accent)) 0%, transparent 70%)",
           filter: "blur(80px)",
         }}
       />
@@ -195,10 +195,10 @@ const Hero = () => {
                           originY: 1,
                           background:
                             i % 3 === 0
-                              ? "linear-gradient(180deg, #7459f7, #5b3cdd)"
+                              ? "linear-gradient(180deg, rgb(var(--cf-secondary)), rgb(var(--cf-navy)))"
                               : i % 3 === 1
-                              ? "linear-gradient(180deg, #a12e70, #7459f7)"
-                              : "#d9e3f9",
+                              ? "linear-gradient(180deg, rgb(var(--cf-accent)), rgb(var(--cf-secondary)))"
+                              : "rgb(var(--cf-secondary) / 0.35)",
                         }}
                         className="flex-1 rounded-t-md min-w-0"
                       />

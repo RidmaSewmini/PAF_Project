@@ -84,10 +84,7 @@ function Register() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-12"
-      style={{
-        background: "linear-gradient(135deg, #5b3cdd 0%, #7459f7 60%, #6b4df5 100%)",
-      }}
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-12 bg-brand-gradient"
     >
       {/* ── Decorative background blobs ─────────────────────────────────── */}
       <motion.div
@@ -100,7 +97,7 @@ function Register() {
         animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.3, 0.15] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
         className="absolute bottom-[-100px] right-[-80px] w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: "rgba(161,46,112,0.25)", filter: "blur(70px)" }}
+        style={{ background: "rgb(var(--cf-accent) / 0.22)", filter: "blur(70px)" }}
       />
       <motion.div
         animate={{ x: [0, 20, 0], y: [0, -20, 0] }}

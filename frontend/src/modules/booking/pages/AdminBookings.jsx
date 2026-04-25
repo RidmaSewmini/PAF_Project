@@ -5,7 +5,7 @@ const STATUS_STYLES = {
   PENDING:   "bg-yellow-100 text-yellow-700",
   APPROVED:  "bg-green-100  text-green-700",
   REJECTED:  "bg-red-100    text-red-700",
-  CANCELLED: "bg-gray-100   text-gray-500",
+  CANCELLED: "bg-surface-container-low text-on-surface/50",
 };
 
 const STATUS_FILTERS = ["ALL", "PENDING", "APPROVED", "REJECTED", "CANCELLED"];
@@ -102,20 +102,20 @@ export default function AdminBookings() {
   // ── Loading ────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-sm text-gray-400">Loading bookings…</p>
+      <div className="min-h-screen bg-surface flex items-center justify-center">
+        <p className="text-sm text-on-surface/45">Loading bookings…</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
+    <div className="min-h-screen bg-surface py-10 px-4">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">All Bookings</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-on-surface">All Bookings</h1>
+          <p className="text-sm text-on-surface/55 mt-1">
             {filtered.length} of {bookings.length} booking
             {bookings.length !== 1 ? "s" : ""}
           </p>
@@ -129,8 +129,8 @@ export default function AdminBookings() {
               onClick={() => setStatusFilter(s)}
               className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-colors ${
                 statusFilter === s
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white text-gray-500 border-gray-200 hover:border-gray-400"
+                  ? "bg-primary text-white border-primary"
+                  : "bg-surface-container-lowest text-on-surface/60 border-surface-container-highest hover:border-primary/40"
               }`}
             >
               {s}
@@ -147,8 +147,8 @@ export default function AdminBookings() {
 
         {/* Empty state */}
         {!error && filtered.length === 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-            <p className="text-gray-400 text-sm">
+          <div className="glass-panel rounded-3xl border border-surface-container-highest shadow-card p-12 text-center">
+            <p className="text-on-surface/45 text-sm">
               No {statusFilter !== "ALL" ? statusFilter.toLowerCase() : ""} bookings found.
             </p>
           </div>
@@ -164,18 +164,18 @@ export default function AdminBookings() {
             return (
               <div
                 key={booking.id}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6"
+                className="glass-panel rounded-3xl border border-surface-container-highest shadow-card p-6"
               >
                 {/* Top row */}
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-sm font-semibold text-gray-800">
+                    <p className="text-sm font-semibold text-on-surface">
                       Facility:{" "}
-                      <span className="font-mono text-gray-600">
+                      <span className="font-mono text-on-surface/60">
                         {booking.resourceId}
                       </span>
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5">
+                    <p className="text-xs text-on-surface/45 mt-0.5">
                       User:{" "}
                       <span className="font-mono">{booking.userId}</span>
                       {" · "}Booked on {formatDateTime(booking.createdAt)}
@@ -183,7 +183,7 @@ export default function AdminBookings() {
                   </div>
                   <span
                     className={`text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap ${
-                      STATUS_STYLES[booking.status] || "bg-gray-100 text-gray-500"
+                      STATUS_STYLES[booking.status] || "bg-surface-container-low text-on-surface/50"
                     }`}
                   >
                     {booking.status}
@@ -193,20 +193,20 @@ export default function AdminBookings() {
                 {/* Details grid */}
                 <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <p className="text-xs text-gray-400">Start</p>
-                    <p className="text-gray-700">{formatDateTime(booking.startTime)}</p>
+                    <p className="text-xs text-on-surface/45">Start</p>
+                    <p className="text-on-surface/70">{formatDateTime(booking.startTime)}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400">End</p>
-                    <p className="text-gray-700">{formatDateTime(booking.endTime)}</p>
+                    <p className="text-xs text-on-surface/45">End</p>
+                    <p className="text-on-surface/70">{formatDateTime(booking.endTime)}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400">Purpose</p>
-                    <p className="text-gray-700">{booking.purpose || "—"}</p>
+                    <p className="text-xs text-on-surface/45">Purpose</p>
+                    <p className="text-on-surface/70">{booking.purpose || "—"}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400">Expected Attendees</p>
-                    <p className="text-gray-700">{booking.expectedAttendees || "—"}</p>
+                    <p className="text-xs text-on-surface/45">Expected Attendees</p>
+                    <p className="text-on-surface/70">{booking.expectedAttendees || "—"}</p>
                   </div>
                 </div>
 
@@ -219,8 +219,8 @@ export default function AdminBookings() {
 
                 {/* Reject reason input panel */}
                 {isPending && isRejecting && (
-                  <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 space-y-3">
-                    <p className="text-xs font-medium text-gray-600">
+                  <div className="mt-4 bg-surface-container-low border border-surface-container-highest rounded-xl px-4 py-3 space-y-3">
+                    <p className="text-xs font-medium text-on-surface/60">
                       Rejection reason
                     </p>
                     <textarea
@@ -228,7 +228,7 @@ export default function AdminBookings() {
                       onChange={(e) => setRejectionReason(e.target.value)}
                       placeholder="Enter a reason for rejection…"
                       rows={2}
-                      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
+                      className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-3 py-2 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
                     />
                     <div className="flex gap-2">
                       <button
@@ -240,7 +240,7 @@ export default function AdminBookings() {
                       </button>
                       <button
                         onClick={closeRejectPanel}
-                        className="text-xs text-gray-500 hover:text-gray-700 px-4 py-1.5 rounded-lg border border-gray-200 hover:bg-white transition-colors"
+                        className="text-xs text-on-surface/60 hover:text-on-surface px-4 py-1.5 rounded-xl border border-surface-container-highest bg-surface-container-low hover:bg-surface-container-lowest transition-colors"
                       >
                         Cancel
                       </button>

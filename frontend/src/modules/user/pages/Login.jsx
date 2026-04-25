@@ -133,10 +133,7 @@ function Login() {
       ═══════════════════════════════════════════════════════ */}
       <motion.div
         variants={panelVariants}
-        className="hidden lg:flex lg:w-[45%] xl:w-[42%] relative flex-col justify-between p-10 overflow-hidden"
-        style={{
-          background: "linear-gradient(145deg, #5b3cdd 0%, #7459f7 55%, #a12e70 100%)",
-        }}
+        className="hidden lg:flex lg:w-[45%] xl:w-[42%] relative flex-col justify-between p-10 overflow-hidden bg-brand-gradient"
       >
         {/* Campus building background image */}
         <div
@@ -154,7 +151,7 @@ function Login() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(91,60,221,0.85) 0%, rgba(116,89,247,0.70) 50%, rgba(91,60,221,0.92) 100%)",
+              "linear-gradient(180deg, rgb(var(--cf-navy) / 0.88) 0%, rgb(var(--cf-secondary) / 0.55) 55%, rgb(var(--cf-navy) / 0.92) 100%)",
           }}
         />
 

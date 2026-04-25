@@ -97,7 +97,7 @@ const Features = () => {
               variants={cardVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
-              whileHover={{ y: -6, boxShadow: "0 12px 40px rgba(91,60,221,0.14)" }}
+              whileHover={{ y: -6, boxShadow: "0 12px 40px rgb(var(--cf-navy) / 0.14)" }}
               className={`bg-white rounded-2xl p-6 border ${feature.accent} transition-all duration-300 cursor-default`}
             >
               <div
