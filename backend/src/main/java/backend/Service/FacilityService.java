@@ -4,13 +4,21 @@ import backend.Model.FacilityModel;
 import backend.Repository.FacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FacilityService {
 
     @Autowired
     private FacilityRepository facilityRepository;
+
+    private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
 
     public List<FacilityModel> getAllFacilities() {
         return facilityRepository.findAll();
@@ -21,11 +29,20 @@ public class FacilityService {
                 .orElseThrow(() -> new RuntimeException("Facility not found with id: " + id));
     }
 
-    public FacilityModel createFacility(FacilityModel facility) {
+    public FacilityModel createFacility(FacilityModel facility, MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            String filename = UUID.randomUUID() + "_" + image.getOriginalFilename();
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            Files.copy(image.getInputStream(), uploadPath.resolve(filename));
+            facility.setImageUrl(filename);
+        }
         return facilityRepository.save(facility);
     }
 
-    public FacilityModel updateFacility(String id, FacilityModel updatedFacility) {
+    public FacilityModel updateFacility(String id, FacilityModel updatedFacility, MultipartFile image) throws IOException {
         FacilityModel existing = getFacilityById(id);
         existing.setName(updatedFacility.getName());
         existing.setType(updatedFacility.getType());
@@ -34,6 +51,15 @@ public class FacilityService {
         existing.setStatus(updatedFacility.getStatus());
         existing.setAvailabilityWindows(updatedFacility.getAvailabilityWindows());
         existing.setDescription(updatedFacility.getDescription());
+        if (image != null && !image.isEmpty()) {
+            String filename = UUID.randomUUID() + "_" + image.getOriginalFilename();
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            Files.copy(image.getInputStream(), uploadPath.resolve(filename));
+            existing.setImageUrl(filename);
+        }
         return facilityRepository.save(existing);
     }
 

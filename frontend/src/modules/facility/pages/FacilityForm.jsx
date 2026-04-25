@@ -23,6 +23,8 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
   );
 
   const [values, setValues] = useState(initial);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(initialValues?.imageUrl ? `http://localhost:8080/uploads/${initialValues.imageUrl}` : null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -31,20 +33,34 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
     setValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  const onImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const payload = {
+      const facilityData = {
         ...values,
         capacity: values.capacity === "" ? undefined : Number(values.capacity),
       };
 
+      const formData = new FormData();
+      formData.append("facility", JSON.stringify(facilityData));
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
       const response = facilityId
-        ? await updateFacility(facilityId, payload)
-        : await createFacility(payload);
+        ? await updateFacility(facilityId, formData)
+        : await createFacility(formData);
 
       if (onSaved) {
         onSaved(response.data);
@@ -188,6 +204,28 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
                 rows={3}
                 className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition resize-none"
               />
+            </div>
+
+            {/* Facility Image */}
+            <div>
+              <label className="block text-sm font-medium text-on-surface/70 mb-1">
+                Facility Image
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={onImageChange}
+                className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition"
+              />
+              {imagePreview && (
+                <div className="mt-3">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-48 object-cover rounded-xl border border-surface-container-highest"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Error */}

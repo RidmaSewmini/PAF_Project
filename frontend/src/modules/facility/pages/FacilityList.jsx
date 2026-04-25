@@ -156,9 +156,17 @@ export default function FacilityList() {
                 className="glass-panel rounded-2xl border border-surface-container-highest shadow-card hover:shadow-card-hover transition overflow-hidden"
               >
                 {/* Image / Banner */}
-                <div className={`${bg} h-36 flex items-center justify-center`}>
-                  <span className="text-5xl">{icon}</span>
-                </div>
+                {facility.imageUrl ? (
+                  <img
+                    src={`http://localhost:8080/uploads/${facility.imageUrl}`}
+                    alt={facility.name}
+                    className="w-full h-36 object-cover"
+                  />
+                ) : (
+                  <div className={`${bg} h-36 flex items-center justify-center`}>
+                    <span className="text-5xl">{icon}</span>
+                  </div>
+                )}
 
                 {/* Details */}
                 <div className="p-5">

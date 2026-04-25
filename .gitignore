@@ -58,3 +58,7 @@ frontend/.env.production.local
 /dist/
 /nbdist/
 /.nb-gradle/
+
+# Uploaded facility images --
+src/main/resources/static/uploads/*
+!src/main/resources/static/uploads/.gitkeep
