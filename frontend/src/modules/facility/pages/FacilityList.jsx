@@ -5,7 +5,7 @@ import { getFacilities, deleteFacility } from "../services/facilityService";
 export default function FacilityList() {
   const [facilities, setFacilities] = useState([]);
   const [error, setError] = useState("");
-  const [filters, setFilters] = useState({ type: "", location: "", status: "" });
+  const [filters, setFilters] = useState({ type: "", location: "", status: "", name: "" });
   const [loading, setLoading] = useState(true);
 
   const filtersRef = useRef(filters);
@@ -34,6 +34,10 @@ export default function FacilityList() {
   useEffect(() => {
     loadFacilities();
   }, [loadFacilities]);
+
+  const handleSearch = () => {
+    loadFacilities(filtersRef.current);
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this facility?")) {
@@ -80,6 +84,17 @@ export default function FacilityList() {
 
       {/* Filters */}
       <div className="glass-panel rounded-2xl border border-surface-container-highest shadow-card p-4 mb-6 flex gap-4 flex-wrap">
+        
+        {/* Search by name */}
+        <input
+          type="text"
+          placeholder="Search by name..."
+          className="bg-surface-container-lowest border border-surface-container-highest rounded-xl px-3 py-2 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30"
+          value={filters.name}
+          onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        />
+
         <select
           className="bg-surface-container-lowest border border-surface-container-highest rounded-xl px-3 py-2 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30"
           value={filters.type}
@@ -98,6 +113,7 @@ export default function FacilityList() {
           className="bg-surface-container-lowest border border-surface-container-highest rounded-xl px-3 py-2 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30"
           value={filters.location}
           onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
 
         <select
@@ -111,7 +127,7 @@ export default function FacilityList() {
         </select>
 
         <button
-          onClick={loadFacilities}
+          onClick={handleSearch}
           className="bg-primary text-white px-4 py-2 rounded-xl text-sm shadow-card hover:bg-primary-container transition"
         >
           Search
@@ -119,7 +135,7 @@ export default function FacilityList() {
 
         <button
           onClick={() => {
-            const cleared = { type: "", location: "", status: "" };
+            const cleared = { type: "", location: "", status: "", name: "" };
             setFilters(cleared);
             loadFacilities(cleared);
           }}

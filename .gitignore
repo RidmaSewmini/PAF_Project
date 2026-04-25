@@ -60,5 +60,6 @@ frontend/.env.production.local
 /.nb-gradle/
 
 # Uploaded facility images --
-src/main/resources/static/uploads/*
-!src/main/resources/static/uploads/.gitkeep
+
+backend/src/main/resources/static/uploads/*
+!backend/src/main/resources/static/uploads/.gitkeep

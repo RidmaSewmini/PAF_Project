@@ -13,4 +13,5 @@ public interface FacilityRepository extends MongoRepository<FacilityModel, Strin
     List<FacilityModel> findByStatus(String status);
     List<FacilityModel> findByCapacityGreaterThanEqual(int capacity);
     List<FacilityModel> findByTypeAndLocation(String type, String location);
+    List<FacilityModel> findByNameContainingIgnoreCase(String name);
 }

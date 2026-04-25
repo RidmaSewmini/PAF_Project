@@ -30,9 +30,10 @@ public class FacilityController {
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) Integer minCapacity,
-            @RequestParam(required = false) String status) {
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String name) {
         return ResponseEntity.ok(
-            facilityService.filterFacilities(type, location, minCapacity, status)
+            facilityService.filterFacilities(type, location, minCapacity, status, name)
         );
     }
 

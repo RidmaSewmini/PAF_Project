@@ -69,8 +69,10 @@ public class FacilityService {
     }
 
     public List<FacilityModel> filterFacilities(String type, String location,
-                                                 Integer minCapacity, String status) {
-        if (type != null && location != null) {
+                                                 Integer minCapacity, String status, String name) {
+        if (name != null && !name.isEmpty()) {
+            return facilityRepository.findByNameContainingIgnoreCase(name);
+        } else if (type != null && location != null) {
             return facilityRepository.findByTypeAndLocation(type, location);
         } else if (type != null) {
             return facilityRepository.findByType(type);

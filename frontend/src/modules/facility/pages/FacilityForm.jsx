@@ -1,12 +1,15 @@
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createFacility, updateFacility } from "../services/facilityService";
+import { useMemo, useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { createFacility, updateFacility, getFacilityById } from "../services/facilityService";
 
 const FACILITY_TYPES = ["LAB", "LECTURE_HALL", "MEETING_ROOM", "EQUIPMENT"];
 const FACILITY_STATUSES = ["ACTIVE", "OUT_OF_SERVICE"];
 
-export default function FacilityForm({ initialValues, facilityId, onSaved }) {
+export default function FacilityForm({ initialValues, facilityId: propFacilityId, onSaved }) {
   const navigate = useNavigate();
+  const { id: paramId } = useParams();
+
+  const facilityId = propFacilityId || paramId;
 
   const initial = useMemo(
     () =>
@@ -26,7 +29,32 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(initialValues?.imageUrl ? `http://localhost:8080/uploads/${initialValues.imageUrl}` : null);
   const [loading, setLoading] = useState(false);
+  const [fetchingData, setFetchingData] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (facilityId) {
+      setFetchingData(true);
+      getFacilityById(facilityId)
+        .then((response) => {
+          const data = response.data;
+          setValues({
+            name: data.name || "",
+            type: data.type || "",
+            location: data.location || "",
+            capacity: data.capacity || "",
+            status: data.status || "ACTIVE",
+            description: data.description || "",
+            availabilityWindows: data.availabilityWindows || [],
+          });
+          if (data.imageUrl) {
+            setImagePreview(`http://localhost:8080/uploads/${data.imageUrl}`);
+          }
+        })
+        .catch(() => setError("Failed to load facility details."))
+        .finally(() => setFetchingData(false));
+    }
+  }, [facilityId]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -75,6 +103,14 @@ export default function FacilityForm({ initialValues, facilityId, onSaved }) {
   };
 
   const isEdit = Boolean(facilityId);
+
+  if (fetchingData) {
+    return (
+      <div className="min-h-screen bg-surface flex items-center justify-center">
+        <p className="text-on-surface/55">Loading facility details...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-surface py-10 px-4">
