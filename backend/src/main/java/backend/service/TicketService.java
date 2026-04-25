@@ -65,4 +65,16 @@ public class TicketService {
         ticket.setStatus(TicketStatus.IN_PROGRESS);
         return ticketRepository.save(ticket);
     }
+
+    public IncidentTicket getTicketById(String id) {
+        return ticketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id: " + id));
+    }
+
+    public void deleteTicket(String id) {
+        if (!ticketRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Ticket not found with id: " + id);
+        }
+        ticketRepository.deleteById(id);
+    }
 }
