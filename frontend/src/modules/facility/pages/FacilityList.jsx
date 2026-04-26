@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getFacilities, deleteFacility } from "../services/facilityService";
 
 export default function FacilityList() {
+  const navigate = useNavigate();
   const [facilities, setFacilities] = useState([]);
   const [error, setError] = useState("");
   const [filters, setFilters] = useState({ type: "", location: "", status: "", name: "" });
@@ -74,18 +75,25 @@ export default function FacilityList() {
           <h1 className="text-3xl font-bold text-on-surface">Facilities</h1>
           <p className="text-on-surface/55 mt-1">Manage campus facilities and resources</p>
         </div>
-        <Link
-          to="/facilities/new"
-          className="bg-primary text-white px-4 py-2 rounded-xl shadow-card hover:bg-primary-container transition"
-        >
-          + Add Facility
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate("/admin-dashboard")}
+            className="text-sm text-on-surface/60 hover:text-on-surface px-4 py-2 rounded-xl border border-surface-container-highest bg-surface-container-low hover:bg-surface-container-lowest transition"
+          >
+            ← Back to Dashboard
+          </button>
+          <Link
+            to="/admin/facilities/new"
+            className="bg-primary text-white px-4 py-2 rounded-xl shadow-card hover:bg-primary-container transition text-sm"
+          >
+            + Add Facility
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}
       <div className="glass-panel rounded-2xl border border-surface-container-highest shadow-card p-4 mb-6 flex gap-4 flex-wrap">
-        
-        {/* Search by name */}
+
         <input
           type="text"
           placeholder="Search by name..."
@@ -217,7 +225,7 @@ export default function FacilityList() {
 
                   <div className="flex gap-2">
                     <Link
-                      to={`/facilities/edit/${facility.id}`}
+                      to={`/admin/facilities/edit/${facility.id}`}
                       className="flex-1 text-center bg-secondary/20 text-on-surface px-3 py-2 rounded-xl text-sm hover:bg-secondary/30 transition"
                     >
                       Edit
