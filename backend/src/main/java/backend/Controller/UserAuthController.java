@@ -1,7 +1,5 @@
 package backend.Controller;
 
-import backend.Exception.UserNotFoundException;
-import backend.Model.UserModel;
 import backend.Repository.UserRepository;
 import backend.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;

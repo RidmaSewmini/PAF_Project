@@ -112,6 +112,22 @@ const TicketDashboard = () => {
   return (
     <div className="min-h-screen bg-[#F7FAFC] p-6 md:p-10">
       <div className="max-w-7xl mx-auto">
+        {/* ── Back Button ── */}
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="flex items-center gap-2 text-[#2D3748] hover:text-[#A78BFA] transition-colors duration-200 font-['Inter'] text-sm font-medium mb-6 group"
+        >
+          <svg
+            className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Dashboard
+        </button>
+
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
           <div>
             <h1 className="text-4xl font-bold text-[#2D3748] font-['Manrope'] mb-2">

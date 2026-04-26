@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createTicket } from '../services/ticketService';
 
 const IncidentForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     category: '',
     description: '',
@@ -10,19 +12,27 @@ const IncidentForm = () => {
     preferredContact: ''
   });
   
+  const [files, setFiles] = useState([]);
   const [status, setStatus] = useState({ loading: false, error: null, success: false });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setFiles(Array.from(e.target.files));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ loading: true, error: null, success: false });
     try {
-      await createTicket(formData);
+      await createTicket(formData, files);
       setStatus({ loading: false, error: null, success: true });
       setFormData({ category: '', description: '', location: '', priority: 'LOW', preferredContact: '' });
+      setFiles([]);
+      // Redirect after 1.5s so the user sees the success message
+      setTimeout(() => navigate('/tickets'), 1500);
     } catch (err) {
       setStatus({ loading: false, error: err.message || 'Failed to submit', success: false });
     }
@@ -30,6 +40,22 @@ const IncidentForm = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-8 bg-white shadow-card rounded-2xl border border-gray-50">
+      {/* ── Back Button ── */}
+      <button
+        onClick={() => navigate('/dashboard')}
+        className="flex items-center gap-2 text-[#2D3748] hover:text-[#A78BFA] transition-colors duration-200 font-['Inter'] text-sm font-medium mb-6 group"
+      >
+        <svg
+          className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to Dashboard
+      </button>
+
       <h2 className="text-3xl font-bold mb-8 text-[#2D3748] font-['Manrope']">Report an Issue</h2>
       
       {status.success && (
@@ -110,6 +136,19 @@ const IncidentForm = () => {
             placeholder="Please describe the issue in detail..." 
             required 
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-bold mb-2">Attach Files (optional)</label>
+          <input
+            type="file"
+            multiple
+            onChange={handleFileChange}
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#A78BFA] focus:border-transparent transition-all text-sm text-[#2D3748] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#A78BFA] file:text-white hover:file:bg-[#7B61FF]"
+          />
+          {files.length > 0 && (
+            <p className="mt-1 text-xs text-gray-500">{files.length} file(s) selected</p>
+          )}
         </div>
         
         <button 
