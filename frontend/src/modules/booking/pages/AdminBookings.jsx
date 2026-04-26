@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllBookings, approveBooking, rejectBooking } from "../services/bookingService";
 
 const STATUS_STYLES = {
@@ -19,14 +20,14 @@ function formatDateTime(dt) {
 }
 
 export default function AdminBookings() {
+  const navigate = useNavigate();
   const [bookings, setBookings]       = useState([]);
   const [loading, setLoading]         = useState(true);
   const [error, setError]             = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
 
-  // Per-card action state
-  const [actioningId, setActioningId]       = useState(null); // which card is being acted on
-  const [rejectingId, setRejectingId]       = useState(null); // which card shows reject input
+  const [actioningId, setActioningId]       = useState(null);
+  const [rejectingId, setRejectingId]       = useState(null);
   const [rejectionReason, setRejectionReason] = useState("");
 
   useEffect(() => {
@@ -99,7 +100,6 @@ export default function AdminBookings() {
       ? bookings
       : bookings.filter((b) => b.status === statusFilter);
 
-  // ── Loading ────────────────────────────────────────────────────
   if (loading) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
@@ -113,12 +113,20 @@ export default function AdminBookings() {
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-on-surface">All Bookings</h1>
-          <p className="text-sm text-on-surface/55 mt-1">
-            {filtered.length} of {bookings.length} booking
-            {bookings.length !== 1 ? "s" : ""}
-          </p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-on-surface">All Bookings</h1>
+            <p className="text-sm text-on-surface/55 mt-1">
+              {filtered.length} of {bookings.length} booking
+              {bookings.length !== 1 ? "s" : ""}
+            </p>
+          </div>
+          <button
+            onClick={() => navigate("/admin-dashboard")}
+            className="text-sm text-on-surface/60 hover:text-on-surface px-4 py-2.5 rounded-xl border border-surface-container-highest bg-surface-container-low hover:bg-surface-container-lowest transition-colors"
+          >
+            ← Back to Dashboard
+          </button>
         </div>
 
         {/* Status filter tabs */}
@@ -157,9 +165,10 @@ export default function AdminBookings() {
         {/* Booking cards */}
         <div className="space-y-4">
           {filtered.map((booking) => {
-            const isPending  = booking.status === "PENDING";
+            const isPending   = booking.status === "PENDING";
             const isActioning = actioningId === booking.id;
             const isRejecting = rejectingId === booking.id;
+            const facilityLabel = booking.resourceName || booking.resourceId;
 
             return (
               <div
@@ -171,8 +180,8 @@ export default function AdminBookings() {
                   <div>
                     <p className="text-sm font-semibold text-on-surface">
                       Facility:{" "}
-                      <span className="font-mono text-on-surface/60">
-                        {booking.resourceId}
+                      <span className="text-on-surface/70">
+                        {facilityLabel}
                       </span>
                     </p>
                     <p className="text-xs text-on-surface/45 mt-0.5">

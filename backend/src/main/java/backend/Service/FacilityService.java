@@ -30,6 +30,14 @@ public class FacilityService {
     }
 
     public FacilityModel createFacility(FacilityModel facility, MultipartFile image) throws IOException {
+        // Unique name validation
+        List<FacilityModel> existing = facilityRepository.findByNameContainingIgnoreCase(facility.getName());
+        boolean exactMatch = existing.stream()
+                .anyMatch(f -> f.getName().equalsIgnoreCase(facility.getName()));
+        if (exactMatch) {
+            throw new RuntimeException("A facility with the name '" + facility.getName() + "' already exists.");
+        }
+
         if (image != null && !image.isEmpty()) {
             String filename = UUID.randomUUID() + "_" + image.getOriginalFilename();
             Path uploadPath = Paths.get(UPLOAD_DIR);
@@ -44,6 +52,16 @@ public class FacilityService {
 
     public FacilityModel updateFacility(String id, FacilityModel updatedFacility, MultipartFile image) throws IOException {
         FacilityModel existing = getFacilityById(id);
+
+        // Unique name validation — allow same name only if it belongs to this facility
+        List<FacilityModel> nameMatches = facilityRepository.findByNameContainingIgnoreCase(updatedFacility.getName());
+        boolean takenByOther = nameMatches.stream()
+                .anyMatch(f -> f.getName().equalsIgnoreCase(updatedFacility.getName())
+                        && !f.getId().equals(id));
+        if (takenByOther) {
+            throw new RuntimeException("A facility with the name '" + updatedFacility.getName() + "' already exists.");
+        }
+
         existing.setName(updatedFacility.getName());
         existing.setType(updatedFacility.getType());
         existing.setLocation(updatedFacility.getLocation());

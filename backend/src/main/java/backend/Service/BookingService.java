@@ -1,10 +1,11 @@
 package backend.service;
 
 import backend.Model.BookingModel;
+import backend.Model.FacilityModel;
 import backend.Model.UserModel;
 import backend.Repository.BookingRepository;
+import backend.Repository.FacilityRepository;
 import backend.Repository.UserRepository;
-import backend.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,6 +18,9 @@ public class BookingService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FacilityRepository facilityRepository;
 
     @Autowired
     private NotificationService notificationService;
@@ -53,6 +57,16 @@ public class BookingService {
             );
         }
 
+        // Fetch facility name and store it on the booking
+        String facilityName = booking.getResourceId();
+        try {
+            FacilityModel facility = facilityRepository.findById(booking.getResourceId()).orElse(null);
+            if (facility != null) {
+                facilityName = facility.getName();
+                booking.setResourceName(facilityName);
+            }
+        } catch (Exception ignored) {}
+
         // No conflict — save as PENDING
         booking.setStatus("PENDING");
         BookingModel saved = bookingRepository.save(booking);
@@ -62,7 +76,7 @@ public class BookingService {
         for (UserModel admin : admins) {
             notificationService.createNotification(
                 admin.getId(),
-                "New booking request from user " + booking.getUserId() + " is pending your approval.",
+                "New booking request for \"" + facilityName + "\" is pending your approval.",
                 "BOOKING_REQUEST"
             );
         }
@@ -81,10 +95,14 @@ public class BookingService {
         booking.setStatus("APPROVED");
         BookingModel saved = bookingRepository.save(booking);
 
-        // Notify the student their booking was approved
+        // Use facility name if available, fall back to resourceId
+        String facilityName = booking.getResourceName() != null
+                ? booking.getResourceName()
+                : booking.getResourceId();
+
         notificationService.createNotification(
             booking.getUserId(),
-            "Your booking for resource " + booking.getResourceId() + " has been approved!",
+            "Your booking for \"" + facilityName + "\" has been approved!",
             "BOOKING_APPROVED"
         );
 
@@ -103,10 +121,14 @@ public class BookingService {
         booking.setRejectionReason(reason);
         BookingModel saved = bookingRepository.save(booking);
 
-        // Notify the student their booking was rejected
+        // Use facility name if available, fall back to resourceId
+        String facilityName = booking.getResourceName() != null
+                ? booking.getResourceName()
+                : booking.getResourceId();
+
         notificationService.createNotification(
             booking.getUserId(),
-            "Your booking for resource " + booking.getResourceId() + " has been rejected. Reason: " + reason,
+            "Your booking for \"" + facilityName + "\" has been rejected. Reason: " + reason,
             "BOOKING_REJECTED"
         );
 

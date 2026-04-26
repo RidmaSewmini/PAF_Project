@@ -86,12 +86,20 @@ export default function MyBookings() {
               {bookings.length} booking{bookings.length !== 1 ? "s" : ""} found
             </p>
           </div>
-          <button
-            onClick={() => navigate("/student/facilities")}
-            className="bg-primary hover:bg-primary-container text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-card transition-colors"
-          >
-            + New Booking
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="text-sm text-on-surface/60 hover:text-on-surface px-4 py-2.5 rounded-xl border border-surface-container-highest bg-surface-container-low hover:bg-surface-container-lowest transition-colors"
+            >
+              ← Back to Dashboard
+            </button>
+            <button
+              onClick={() => navigate("/student/facilities")}
+              className="bg-primary hover:bg-primary-container text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-card transition-colors"
+            >
+              + New Booking
+            </button>
+          </div>
         </div>
 
         {/* Error */}
@@ -120,9 +128,12 @@ export default function MyBookings() {
             const isCancellable =
               booking.status === "PENDING" || booking.status === "APPROVED";
 
+            const facilityLabel = booking.resourceName || booking.resourceId;
+
             const qrData = JSON.stringify({
               bookingId: booking.id,
               resourceId: booking.resourceId,
+              resourceName: facilityLabel,
               userId: booking.userId,
               startTime: booking.startTime,
               endTime: booking.endTime,
@@ -138,8 +149,8 @@ export default function MyBookings() {
                   <div>
                     <p className="text-sm font-semibold text-on-surface">
                       Facility:{" "}
-                      <span className="font-mono text-on-surface/60">
-                        {booking.resourceId}
+                      <span className="text-on-surface/70">
+                        {facilityLabel}
                       </span>
                     </p>
                     <p className="text-xs text-on-surface/45 mt-0.5">
