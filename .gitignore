@@ -63,3 +63,4 @@ frontend/.env.production.local
 
 backend/src/main/resources/static/uploads/*
 !backend/src/main/resources/static/uploads/.gitkeep
+frontend/package-lock.json
