@@ -27,7 +27,10 @@ const IncidentForm = () => {
     e.preventDefault();
     setStatus({ loading: true, error: null, success: false });
     try {
-      await createTicket(formData, files);
+      // Attach the submitting user's ID so the ticket can be filtered by user later
+      const userId = localStorage.getItem('userId');
+      const ticketPayload = { ...formData, userId };
+      await createTicket(ticketPayload, files);
       setStatus({ loading: false, error: null, success: true });
       setFormData({ category: '', description: '', location: '', priority: 'LOW', preferredContact: '' });
       setFiles([]);

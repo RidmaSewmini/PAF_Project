@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllTickets } from '../services/ticketService';
+import { getAllTickets, getTicketsByUserId } from '../services/ticketService';
 import TicketModal from '../component/TicketModal';
 import { useAuth } from '../../../context/AuthContext';
 
@@ -12,16 +12,27 @@ const TicketDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const isAdmin = user?.role === 'ADMIN';
+  const { user, loading: authLoading } = useAuth();
+  // Normalise role to uppercase so 'admin' and 'ADMIN' both match
+  const isAdmin = (user?.role || '').toUpperCase() === 'ADMIN';
 
   useEffect(() => {
+    // Wait until AuthContext has resolved the user before fetching
+    if (authLoading) return;
     fetchTickets();
-  }, []);
+  }, [authLoading, isAdmin]);
 
   const fetchTickets = async () => {
     try {
-      const data = await getAllTickets();
+      let data;
+      if (isAdmin) {
+        // Admin sees every ticket across the campus
+        data = await getAllTickets();
+      } else {
+        // Regular user sees only their own submitted tickets
+        const userId = localStorage.getItem('userId');
+        data = await getTicketsByUserId(userId);
+      }
       setTickets(data);
     } catch (err) {
       console.error('Failed to load tickets', err);
@@ -109,12 +120,20 @@ const TicketDashboard = () => {
     );
   });
 
+  // ── Admin summary stats (derived from full ticket list, not filtered) ──
+  const stats = isAdmin ? {
+    total:      tickets.length,
+    open:       tickets.filter(t => t.status === 'OPEN').length,
+    inProgress: tickets.filter(t => t.status === 'IN_PROGRESS').length,
+    resolved:   tickets.filter(t => t.status === 'RESOLVED').length,
+  } : null;
+
   return (
     <div className="min-h-screen bg-[#F7FAFC] p-6 md:p-10">
       <div className="max-w-7xl mx-auto">
         {/* ── Back Button ── */}
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate(isAdmin ? '/admin-dashboard' : '/dashboard')}
           className="flex items-center gap-2 text-[#2D3748] hover:text-[#A78BFA] transition-colors duration-200 font-['Inter'] text-sm font-medium mb-6 group"
         >
           <svg
@@ -125,16 +144,18 @@ const TicketDashboard = () => {
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Dashboard
+          {isAdmin ? 'Back to Admin Dashboard' : 'Back to Dashboard'}
         </button>
 
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
           <div>
             <h1 className="text-4xl font-bold text-[#2D3748] font-['Manrope'] mb-2">
-              Incident Dashboard
+              {isAdmin ? 'Incident Management Console' : 'Incident Dashboard'}
             </h1>
             <p className="text-[#2D3748]/70 font-['Inter'] text-sm">
-              Manage and track all campus maintenance requests.
+              {isAdmin
+                ? 'Review, triage, and update all campus incident tickets.'
+                : 'Manage and track all campus maintenance requests.'}
             </p>
           </div>
           
@@ -163,6 +184,23 @@ const TicketDashboard = () => {
           </div>
         </div>
 
+        {/* ── Admin Stats Strip ── */}
+        {isAdmin && stats && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            {[
+              { label: 'Total',       value: stats.total,      color: 'bg-[#2D3748]',  text: 'text-white' },
+              { label: 'Open',        value: stats.open,       color: 'bg-[#F472B6]',  text: 'text-white' },
+              { label: 'In Progress', value: stats.inProgress, color: 'bg-[#A78BFA]',  text: 'text-white' },
+              { label: 'Resolved',    value: stats.resolved,   color: 'bg-[#7B61FF]',  text: 'text-white' },
+            ].map(({ label, value, color, text }) => (
+              <div key={label} className={`${color} rounded-2xl p-5 shadow-sm flex flex-col gap-1`}>
+                <span className={`text-3xl font-bold font-['Manrope'] ${text}`}>{value}</span>
+                <span className={`text-xs font-semibold font-['Inter'] ${text} opacity-80`}>{label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
         {loading ? (
           <div className="flex justify-center items-center py-32">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#7B61FF]"></div>
@@ -177,7 +215,9 @@ const TicketDashboard = () => {
                   </svg>
                 </div>
                 <p className="text-[#2D3748] font-['Manrope'] text-2xl font-bold mb-2">All systems go.</p>
-                <p className="text-[#2D3748]/70 font-['Inter'] text-base mb-6">No incidents reported.</p>
+                <p className="text-[#2D3748]/70 font-['Inter'] text-base mb-6">
+                  {isAdmin ? 'No campus incidents to manage right now.' : 'No incidents reported.'}
+                </p>
                 
                 {!isAdmin && (
                   <button 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Mail, Lock, EyeOff, Eye, AlertCircle, ShieldCheck } from "lucide-react";
+import { useAuth } from "../../../context/AuthContext";
 
 // ─── Floating notification card on the left panel ────────────────────────────
 const NotificationCard = ({ icon, tag, title, body, delay, className }) => (
@@ -71,6 +72,7 @@ const FormInput = ({ id, label, type, value, onChange, placeholder, icon, rightS
 // ─── Main Login Component ─────────────────────────────────────────────────────
 function AdminLogin() {
   const navigate = useNavigate();
+  const { fetchUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -95,6 +97,8 @@ function AdminLogin() {
         localStorage.setItem("userId", response.data.id);
         localStorage.setItem("role", "ADMIN");
         if (rememberMe) localStorage.setItem("rememberMe", "true");
+        // Sync AuthContext so user is not null when ProtectedRoute checks
+        await fetchUser();
         // Navigate to dashboard after successful login
         navigate("/admin-dashboard");
       } else {

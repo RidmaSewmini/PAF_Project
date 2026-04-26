@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import { useNotifications } from "../../context/NotificationContext";
 import { useAuth } from "../../context/AuthContext";
-import { LayoutDashboard, Bell, Users, ClipboardList, User, Shield, Radio, Key, Settings, UserCircle } from "lucide-react";
+import { LayoutDashboard, Bell, Users, ClipboardList, Ticket, Shield, Radio, Key, Settings, UserCircle } from "lucide-react";
 
 export default function AdminSidebar() {
   const { unseenCount } = useNotifications();
@@ -15,7 +15,7 @@ export default function AdminSidebar() {
     { label: "Notifications", path: "/admin/notifications", icon: <Bell />, badge: unseenCount },
     { label: "Users", path: "/admin/users", icon: <Users /> },
     { label: "Audit Logs", path: "/admin/audit", icon: <ClipboardList /> },
-    { label: "Tickets", path: "/dashboard", icon: <User /> },
+    { label: "Tickets", path: "/tickets", icon: <Ticket /> },
     { label: "User Roles", path: "/admin/roles", icon: <Shield /> },
     { label: "Broadcasts", path: "/admin/broadcasts", icon: <Radio /> },
     { label: "Auth Logs", path: "/admin/auth-logs", icon: <Key /> },

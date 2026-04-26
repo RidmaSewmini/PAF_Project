@@ -77,9 +77,25 @@ export const getAllTickets = async () => {
   }
 };
 
+/**
+ * Fetches only the tickets submitted by a specific user.
+ * @param {string} userId - The logged-in user's ID.
+ * @returns {Promise<Array>} An array of ticket objects belonging to the user.
+ */
+export const getTicketsByUserId = async (userId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}?userId=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user tickets:', error);
+    throw error.response?.data || new Error('Failed to fetch user tickets');
+  }
+};
+
 export default {
   createTicket,
   getTicketById,
   updateTicketStatus,
-  getAllTickets
+  getAllTickets,
+  getTicketsByUserId
 };

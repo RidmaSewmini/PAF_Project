@@ -121,6 +121,10 @@ public class TicketService {
         return ticketRepository.findAll();
     }
 
+    public java.util.List<IncidentTicket> getTicketsByUserId(String userId) {
+        return ticketRepository.findByUserId(userId);
+    }
+
     public IncidentTicket getTicketById(String id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id: " + id));

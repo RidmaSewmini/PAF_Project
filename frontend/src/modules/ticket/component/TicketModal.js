@@ -6,18 +6,27 @@ const TicketModal = ({ ticket, onClose, onUpdate }) => {
   const [resolutionNotes, setResolutionNotes] = useState(ticket?.resolutionNotes || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   if (!ticket) return null;
 
   const handleUpdate = async () => {
+    // Client-side guard — backend also enforces this
+    if (status === 'RESOLVED' && !resolutionNotes.trim()) {
+      setError('Resolution notes are required when marking a ticket as Resolved.');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
       const updated = await updateTicketStatus(ticket.id, { status, resolutionNotes });
-      onUpdate(updated);
-      onClose();
+      onUpdate(updated);        // propagates new badge to the card grid immediately
+      setSuccess(true);         // show confirmation before closing
+      setTimeout(onClose, 1500);
     } catch (err) {
-      setError(err.message || 'Failed to update status');
+      setError(
+        typeof err === 'string' ? err : err.message || 'Failed to update status'
+      );
     } finally {
       setLoading(false);
     }
@@ -93,8 +102,19 @@ const TicketModal = ({ ticket, onClose, onUpdate }) => {
 
           {/* Technician Update Section */}
           <div className="bg-[#F0F3FF] p-5 rounded-2xl border border-[#A78BFA]/30">
-            <h4 className="font-bold text-[#2D3748] mb-4 font-['Manrope']">Technician Update</h4>
-            {error && <div className="mb-4 text-xs text-red-600 bg-red-50 p-2 rounded">{error}</div>}
+            <h4 className="font-bold text-[#2D3748] mb-4 font-['Manrope']">Admin Status Update</h4>
+
+            {/* Success confirmation banner */}
+            {success && (
+              <div className="mb-4 flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 p-3 rounded-xl">
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Ticket status updated successfully! Closing…
+              </div>
+            )}
+
+            {error && <div className="mb-4 text-xs text-red-600 bg-red-50 border border-red-200 p-3 rounded-xl">{error}</div>}
             
             <div className="space-y-4">
               <div>
@@ -113,7 +133,10 @@ const TicketModal = ({ ticket, onClose, onUpdate }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#2D3748] mb-1">Resolution Notes</label>
+                <label className="block text-xs font-bold text-[#2D3748] mb-1">
+                  Resolution Notes
+                  {status === 'RESOLVED' && <span className="ml-1 text-red-500">*required</span>}
+                </label>
                 <textarea 
                   value={resolutionNotes}
                   onChange={(e) => setResolutionNotes(e.target.value)}
@@ -135,10 +158,10 @@ const TicketModal = ({ ticket, onClose, onUpdate }) => {
           </button>
           <button 
             onClick={handleUpdate}
-            disabled={loading}
+            disabled={loading || success}
             className="px-6 py-2.5 rounded-xl bg-[#7B61FF] text-white font-bold hover:bg-[#674bb5] shadow-glass transition-colors disabled:opacity-70"
           >
-            {loading ? 'Updating...' : 'Update Status'}
+            {loading ? 'Updating…' : success ? '✓ Updated' : 'Update Status'}
           </button>
         </div>
 

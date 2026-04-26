@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IncidentTicketRepository extends MongoRepository<IncidentTicket, String> {
+    java.util.List<IncidentTicket> findByUserId(String userId);
 }
