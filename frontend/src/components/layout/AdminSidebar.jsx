@@ -26,37 +26,47 @@ export default function AdminSidebar() {
   ];
 
   return (
-    <aside className="w-[280px] bg-[#fcfdff] border-r border-[#f1f3f9] flex flex-col justify-between flex-shrink-0 relative z-20 h-full">
-      <div className="overflow-y-auto">
+    <aside className="w-[280px] bg-gradient-to-b from-[#5b3cdd] to-[#7459f7] flex flex-col justify-between flex-shrink-0 relative z-20 h-full overflow-hidden shadow-[4px_0_24px_rgba(91,60,221,0.15)]">
+      {/* Layer 1: Base Gradient is in the parent classes */}
+      {/* Layer 2: Botanical / Texture Illustration Overlay */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+CjxwYXRoIGQ9Ik0wIDBoODB2ODBIMHoiIGZpbGw9Im5vbmUiLz4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4=')]"></div>
+      {/* Layer 3: Glass Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
+
+      <div className="overflow-y-auto relative z-10 scrollbar-hide">
         {/* Sidebar Header */}
         <div className="px-10 mt-10 mb-12">
-          <h1 className="font-aldrich font-extrabold text-[#1f2937] text-[1.15rem] tracking-tight leading-tight">
+          <h1 className="font-editorial text-white text-[2rem] tracking-tight leading-tight italic">
             Admin Portal
           </h1>
-          <p className="text-[9px] font-bold tracking-[0.2em] text-slate-400 uppercase mt-1">
+          <p className="font-['Manrope'] text-[9px] font-bold tracking-[0.2em] text-white/70 uppercase mt-1">
             System Management
           </p>
         </div>
 
         {/* Navigation Links */}
-        <nav className="px-5 space-y-2">
+        <nav className="px-5 space-y-2 font-['Manrope']">
           {navItems.map((item) => {
             const isActive = location.pathname.startsWith(item.path);
             return (
               <Link
                 key={item.label}
                 to={item.path}
-                className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full transition-colors font-medium text-sm sidebar-item ${
-                  isActive ? "active" : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
-                }`}
+                className={`w-full flex items-center justify-between px-5 py-3.5 rounded-2xl transition-all font-semibold text-[14px] group ${isActive
+                    ? "bg-white text-[#5b3cdd] shadow-[0_8px_20px_rgba(0,0,0,0.12)] translate-x-1"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
               >
                 <div className="flex items-center gap-3 relative">
-                  {isActive && <span className="w-1.5 h-6 bg-indigo-600 absolute -left-10 top-1/2 -translate-y-1/2 rounded-r-lg"></span>}
-                  {React.cloneElement(item.icon, { className: "w-5 h-5 text-current" })}
+                  {React.cloneElement(item.icon, {
+                    className: `w-5 h-5 transition-transform duration-300 ${isActive ? "text-[#5b3cdd]" : "text-white/80 group-hover:text-white"
+                      }`,
+                  })}
                   {item.label}
                 </div>
                 {item.badge > 0 && (
-                  <span className="px-2 py-0.5 text-[10px] bg-red-500 text-white font-black rounded-full">
+                  <span className={`px-2 py-0.5 text-[10px] font-black rounded-full shadow-sm ${isActive ? "bg-red-500 text-white" : "bg-white/20 text-white"
+                    }`}>
                     {item.badge > 99 ? "99+" : item.badge}
                   </span>
                 )}
@@ -67,18 +77,18 @@ export default function AdminSidebar() {
       </div>
 
       {/* Profile Card Bottom */}
-      <div className="p-6">
-        <div className="bg-indigo-50/50 rounded-2xl p-4 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-sm shadow-md overflow-hidden relative">
+      <div className="p-5 relative z-10">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex items-center gap-3 transition-colors hover:bg-white/15 cursor-pointer">
+          <div className="w-10 h-10 rounded-full bg-white text-[#5b3cdd] flex items-center justify-center font-bold text-sm shadow-md overflow-hidden relative border-2 border-white/50">
             {profileImageUrl ? (
               <img src={profileImageUrl} alt="avatar" className="w-full h-full object-cover" />
             ) : (
               user?.name?.charAt(0).toUpperCase() || "A"
             )}
           </div>
-          <div>
-            <p className="text-sm font-bold text-slate-800">{user?.name || "Admin User"}</p>
-            <p className="text-[10px] text-slate-500 font-medium">System Lead</p>
+          <div className="font-['Manrope']">
+            <p className="text-sm font-bold text-white">{user?.name || "Admin User"}</p>
+            <p className="text-[10px] text-white/70 font-semibold tracking-wider uppercase">System Lead</p>
           </div>
         </div>
       </div>
