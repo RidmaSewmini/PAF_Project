@@ -1,23 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Layout (wraps UpdateProfile — uses landing Navbar/Footer)
 import MainLayout from "./layouts/MainLayout";
-
-// Pages — standalone landing
 import Home from "./pages/Home";
-
-// Pages — standalone with DashboardNavbar+Footer
 import Dashboard from "./modules/user/pages/Dashboard";
-
-// ── User module pages (src/modules/user/pages/) ────────────────────────────
 import UpdateProfile from "./modules/user/pages/UpdateProfile";
 import Register from "./modules/user/pages/Register";
 import Login from "./modules/user/pages/Login";
+import UserProfile from "./modules/user/pages/UserProfile";
 import ForgotPassword from "./modules/user/pages/ForgotPassword";
 import ResetPassword from "./modules/user/pages/ResetPassword";
 import VerifyEmailPage from "./modules/user/pages/VerifyEmailPage";
 import GoogleLoginSuccess from "./modules/user/pages/GoogleLoginSuccess";
-
 import AdminLogin from "./modules/admin/pages/AdminLogin";
 import AdminDashboard from "./modules/admin/pages/AdminDashboard";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
@@ -27,6 +20,12 @@ import NotificationsPage from "./modules/notification/pages/NotificationsPage";
 import AdminUsersPage from "./modules/admin/pages/AdminUsersPage";
 import AdminAuditPage from "./modules/admin/pages/AdminAuditPage";
 import AdminSettingsPage from "./modules/admin/pages/AdminSettingsPage";
+import FacilityList from "./modules/facility/pages/FacilityList";
+import FacilityForm from "./modules/facility/pages/FacilityForm";
+import StudentFacilityList from "./modules/facility/pages/StudentFacilityList";
+import BookingForm from "./modules/booking/pages/BookingForm";
+import MyBookings from "./modules/booking/pages/MyBookings";
+import AdminBookings from "./modules/booking/pages/AdminBookings";
 
 // ── Ticket module pages ────────────────────────────────────────────────────
 import TicketDashboard from "./modules/ticket/pages/TicketDashboard";
@@ -45,30 +44,41 @@ function App() {
         <Toaster position="top-right" />
         <Router>
           <Routes>
-            {/* ── Landing page (standalone landing Navbar) ───────────────── */}
             <Route path="/" element={<Home />} />
-
-            {/* ── App pages (standalone — use DashboardNavbar + DashboardFooter) */}
             <Route path="/dashboard" element={<Dashboard />} />
 
-            {/* ── Inner page still in MainLayout (landing Navbar) ───────── */}
-            <Route element={<MainLayout />}>
-              <Route path="/updateProfile/:id" element={<UpdateProfile />} />
-            </Route>
+            {/* ── Facility routes ── */}
+            <Route path="/facilities" element={<FacilityList />} />
+            <Route path="/facilities/new" element={<FacilityForm />} />
+            <Route path="/facilities/edit/:id" element={<FacilityForm />} />
+            <Route path="/student/facilities" element={<StudentFacilityList />} />
+            <Route path="/admin/facilities" element={<ProtectedAdminRoute><FacilityList /></ProtectedAdminRoute>} />
+            <Route path="/admin/facilities/new" element={<ProtectedAdminRoute><FacilityForm /></ProtectedAdminRoute>} />
+            <Route path="/admin/facilities/edit/:id" element={<ProtectedAdminRoute><FacilityForm /></ProtectedAdminRoute>} />
 
-            {/* ── Auth routes (full-screen standalone) ──────────────────── */}
+            {/* ── Booking routes ── */}
+            <Route path="/bookings/new" element={<BookingForm />} />
+            <Route path="/my-bookings" element={<MyBookings />} />
+            <Route path="/admin/bookings" element={<ProtectedAdminRoute><AdminBookings /></ProtectedAdminRoute>} />
+
+            {/* ── Auth routes ── */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/verify-email" element={<VerifyEmailPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-
             <Route path="/google-login-success" element={<GoogleLoginSuccess />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin-dashboard" element={<ProtectedAdminRoute><AdminDashboard /></ProtectedAdminRoute>} />
 
-            {/* ── Extracted modern profile routes ────────────────────────────── */}
+            {/* ── Inner page in MainLayout ── */}
+            <Route element={<MainLayout />}>
+              <Route path="/updateProfile/:id" element={<UpdateProfile />} />
+            </Route>
+
+            {/* ── Profile & notifications routes ── */}
             <Route path="/profile" element={<UserProfilePage />} />
+            <Route path="/userProfile" element={<UserProfile />} />
             <Route path="/admin/profile" element={<AdminProfilePage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/admin/notifications" element={<ProtectedAdminRoute><NotificationsPage /></ProtectedAdminRoute>} />

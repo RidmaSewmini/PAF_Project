@@ -3,24 +3,22 @@ package backend.Controller;
 import backend.Exception.UserNotFoundException;
 import backend.Model.UserModel;
 import backend.Repository.UserRepository;
-
+import backend.email.EmailService;
+import backend.service.AuditService;
+import backend.service.ImageService;
+import backend.service.NotificationService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import backend.email.EmailService;
-import backend.service.NotificationService;
-import backend.service.AuditService;
-import backend.service.ImageService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -47,7 +45,6 @@ public class UserController {
     // Create new user
     @PostMapping("/users")
     public UserModel newUserModel(@RequestBody UserModel newUserModel) {
-
         newUserModel.setPassword(passwordEncoder.encode(newUserModel.getPassword()));
         newUserModel.setRole(UserModel.Role.USER);
 
@@ -102,7 +99,6 @@ public class UserController {
             response.put("message", "Login successful");
             response.put("id", user.getId());
             response.put("role", user.getRole().toString());
-
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -128,7 +124,6 @@ public class UserController {
             e.printStackTrace(); // IMPORTANT for debugging
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Error fetching users"));
         }
-
     }
 
     // Get user by id
@@ -197,7 +192,6 @@ public class UserController {
             }
 
             return updatedUser;
-
         }).orElseThrow(() -> new UserNotFoundException("User not found: " + id));
     }
 
