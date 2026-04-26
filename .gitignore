@@ -58,3 +58,9 @@ frontend/.env.production.local
 /dist/
 /nbdist/
 /.nb-gradle/
+
+# Uploaded facility images --
+
+backend/src/main/resources/static/uploads/*
+!backend/src/main/resources/static/uploads/.gitkeep
+/frontend/package-lock.json

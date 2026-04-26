@@ -218,15 +218,15 @@ function UserProfile() {
       {/* ── Ambient background radial glows ──────────────────────────── */}
       <div
         className="fixed top-[-100px] right-[-80px] w-[480px] h-[480px] rounded-full pointer-events-none opacity-[0.07]"
-        style={{ background: "radial-gradient(circle, #5b3cdd 0%, transparent 70%)", filter: "blur(80px)" }}
+        style={{ background: "radial-gradient(circle, rgb(var(--cf-secondary)) 0%, transparent 70%)", filter: "blur(80px)" }}
       />
       <div
         className="fixed bottom-[-80px] left-[-80px] w-[360px] h-[360px] rounded-full pointer-events-none opacity-[0.06]"
-        style={{ background: "radial-gradient(circle, #a12e70 0%, transparent 70%)", filter: "blur(80px)" }}
+        style={{ background: "radial-gradient(circle, rgb(var(--cf-accent)) 0%, transparent 70%)", filter: "blur(80px)" }}
       />
       <div
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[480px] rounded-full pointer-events-none opacity-[0.025]"
-        style={{ background: "radial-gradient(ellipse, #7459f7 0%, transparent 65%)", filter: "blur(100px)" }}
+        style={{ background: "radial-gradient(ellipse, rgb(var(--cf-navy)) 0%, transparent 65%)", filter: "blur(100px)" }}
       />
 
       {/* ── Navbar ───────────────────────────────────────────────────── */}
@@ -414,7 +414,7 @@ function UserProfile() {
             </div>
 
             {/* ── Divider ─────────────────────────────────────────── */}
-            <div className="my-8 h-px bg-surface-container-highest/60" />
+            <div className="my-8 h-px bg-surface-container-highest" />
 
             {/* ── Danger Zone ─────────────────────────────────────── */}
             <div className="flex items-center justify-between gap-4 flex-wrap">

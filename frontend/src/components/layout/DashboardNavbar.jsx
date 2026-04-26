@@ -40,7 +40,7 @@ const DashboardNavbar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L1 9l11 6 11-6-11-6zM1 17l11 6 11-6M1 13l11 6 11-6" />
               </svg>
             </div>
-            <span className="font-titillium font-extrabold text-base text-on-surface tracking-tight">
+            <span className="font-headline font-extrabold text-base text-on-surface tracking-tight">
               Campus<span className="text-primary">Flow</span>
             </span>
           </Link>
@@ -73,7 +73,7 @@ const DashboardNavbar = () => {
             {/* Greeting */}
             <span className="hidden sm:block text-sm text-on-surface/60">
               Hello,{" "}
-              <span className="font-aldrich text-primary text-base font-medium">
+              <span className="editorial-text text-primary text-base font-medium">
                 {firstName}!
               </span>
             </span>
