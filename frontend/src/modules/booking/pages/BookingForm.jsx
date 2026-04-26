@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
+import DashboardLayout from "../../../components/layout/DashboardLayout";
+import UserSidebar from "../../../components/layout/UserSidebar";
 
 const FACILITY_TYPES = ["LAB", "LECTURE_HALL", "MEETING_ROOM", "EQUIPMENT"];
 const FACILITY_STATUSES = ["ACTIVE", "OUT_OF_SERVICE"];
@@ -69,8 +71,9 @@ export default function BookingForm({ initialValues, onSaved }) {
   };
 
   return (
-    <div className="min-h-screen bg-surface py-10 px-4">
-      <div className="max-w-2xl mx-auto">
+    <DashboardLayout sidebar={<UserSidebar />}>
+      <div className="min-h-screen bg-surface py-10 px-4">
+        <div className="max-w-2xl mx-auto">
 
         {/* Header */}
         <div className="mb-8">
@@ -193,7 +196,8 @@ export default function BookingForm({ initialValues, onSaved }) {
 
           </form>
         </div>
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

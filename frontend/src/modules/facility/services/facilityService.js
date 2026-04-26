@@ -1,6 +1,10 @@
 import api from "../../../services/api";
 
-export const getFacilities = (filters) => api.get("/api/facilities", { params: filters });
+export const getFacilities = async (filters) => {
+  const response = await api.get("/api/facilities", { params: filters });
+  console.log("Facilities API response:", response.data);
+  return response;
+};
 
 export const getFacilityById = (id) => api.get(`/api/facilities/${id}`);
 

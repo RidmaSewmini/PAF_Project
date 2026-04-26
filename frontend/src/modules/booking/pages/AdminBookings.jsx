@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllBookings, approveBooking, rejectBooking } from "../services/bookingService";
+import DashboardLayout from "../../../components/layout/DashboardLayout";
+import AdminSidebar from "../../../components/layout/AdminSidebar";
 
 const STATUS_STYLES = {
   PENDING:   "bg-yellow-100 text-yellow-700",
@@ -102,15 +104,18 @@ export default function AdminBookings() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface flex items-center justify-center">
-        <p className="text-sm text-on-surface/45">Loading bookings…</p>
-      </div>
+      <DashboardLayout sidebar={<AdminSidebar />}>
+        <div className="min-h-screen bg-surface flex items-center justify-center">
+          <p className="text-sm text-on-surface/45">Loading bookings…</p>
+        </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-surface py-10 px-4">
-      <div className="max-w-4xl mx-auto">
+    <DashboardLayout sidebar={<AdminSidebar />}>
+      <div className="min-h-screen bg-surface py-10 px-4">
+        <div className="max-w-4xl mx-auto">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -282,7 +287,8 @@ export default function AdminBookings() {
           })}
         </div>
 
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

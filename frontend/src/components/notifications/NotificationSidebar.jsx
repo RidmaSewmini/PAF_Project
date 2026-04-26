@@ -11,7 +11,7 @@ export default function NotificationSidebar({ isOpen, onClose }) {
     if (isOpen) {
       markAllAsSeen();
     }
-  }, [isOpen]);
+  }, [isOpen, markAllAsSeen]);
 
   const formatDate = (dateString) => {
     try {

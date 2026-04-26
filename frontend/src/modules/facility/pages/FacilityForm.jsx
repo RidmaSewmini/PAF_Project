@@ -1,6 +1,8 @@
 import { useMemo, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createFacility, updateFacility, getFacilityById } from "../services/facilityService";
+import DashboardLayout from "../../../components/layout/DashboardLayout";
+import AdminSidebar from "../../../components/layout/AdminSidebar";
 
 const FACILITY_TYPES = ["LAB", "LECTURE_HALL", "MEETING_ROOM", "EQUIPMENT"];
 const FACILITY_STATUSES = ["ACTIVE", "OUT_OF_SERVICE"];
@@ -106,15 +108,18 @@ export default function FacilityForm({ initialValues, facilityId: propFacilityId
 
   if (fetchingData) {
     return (
-      <div className="min-h-screen bg-surface flex items-center justify-center">
-        <p className="text-on-surface/55">Loading facility details...</p>
-      </div>
+      <DashboardLayout sidebar={<AdminSidebar />}>
+        <div className="min-h-screen bg-surface flex items-center justify-center">
+          <p className="text-on-surface/55">Loading facility details...</p>
+        </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-surface py-10 px-4">
-      <div className="max-w-2xl mx-auto">
+    <DashboardLayout sidebar={<AdminSidebar />}>
+      <div className="min-h-screen bg-surface py-10 px-4">
+        <div className="max-w-2xl mx-auto">
 
         {/* Header */}
         <div className="mb-8">
@@ -291,7 +296,8 @@ export default function FacilityForm({ initialValues, facilityId: propFacilityId
 
           </form>
         </div>
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

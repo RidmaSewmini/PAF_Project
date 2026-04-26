@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBookingsByUser, cancelBooking } from "../services/bookingService";
 import { QRCodeSVG } from "qrcode.react";
+import DashboardLayout from "../../../components/layout/DashboardLayout";
+import UserSidebar from "../../../components/layout/UserSidebar";
 
 // ── Status pill styles ────────────────────────────────────────────────────────
 const STATUS_STYLES = {
@@ -127,15 +129,18 @@ export default function MyBookings() {
   // ── Loading state ───────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface flex items-center justify-center">
-        <p className="text-sm text-on-surface/45">Loading your bookings…</p>
-      </div>
+      <DashboardLayout sidebar={<UserSidebar />}>
+        <div className="min-h-screen bg-surface flex items-center justify-center">
+          <p className="text-sm text-on-surface/45">Loading your bookings…</p>
+        </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-surface py-10 px-4">
-      <div className="max-w-4xl mx-auto">
+    <DashboardLayout sidebar={<UserSidebar />}>
+      <div className="min-h-screen bg-surface py-10 px-4">
+        <div className="max-w-4xl mx-auto">
 
         {/* ── Header ─────────────────────────────────────────────────────────── */}
         <div className="flex items-center justify-between mb-6">
@@ -373,7 +378,8 @@ export default function MyBookings() {
             );
           })}
         </div>
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

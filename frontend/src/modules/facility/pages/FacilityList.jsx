@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getFacilities, deleteFacility } from "../services/facilityService";
+import DashboardLayout from "../../../components/layout/DashboardLayout";
+import AdminSidebar from "../../../components/layout/AdminSidebar";
 
 export default function FacilityList() {
   const navigate = useNavigate();
@@ -68,7 +70,8 @@ export default function FacilityList() {
   };
 
   return (
-    <div className="min-h-screen bg-surface p-6">
+    <DashboardLayout sidebar={<AdminSidebar />}>
+      <div className="min-h-screen bg-surface p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -244,5 +247,6 @@ export default function FacilityList() {
         </div>
       )}
     </div>
+  </DashboardLayout>
   );
 }
