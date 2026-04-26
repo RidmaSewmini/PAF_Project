@@ -18,6 +18,7 @@ public class IncidentTicket {
     private TicketStatus status;
     private String location;
     private String preferredContact;
+    private String userId;          // ID of the user who submitted the ticket
     private LocalDateTime createdAt;
 
     private String resolutionNotes;
@@ -84,6 +85,14 @@ public class IncidentTicket {
 
     public void setPreferredContact(String preferredContact) {
         this.preferredContact = preferredContact;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public LocalDateTime getCreatedAt() {

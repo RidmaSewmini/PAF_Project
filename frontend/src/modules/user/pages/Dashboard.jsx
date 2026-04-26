@@ -176,8 +176,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
-    if (role !== "USER") {
+    const role = (localStorage.getItem("role") || "").toUpperCase();
+    if (role !== "USER" && role !== "ADMIN") {
       navigate("/login");
     }
   }, [navigate]);

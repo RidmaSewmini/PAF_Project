@@ -5,12 +5,26 @@ const API_BASE_URL = 'http://localhost:8080/api/tickets';
 
 /**
  * Sends a POST request to create a new incident ticket.
+ * Sends multipart/form-data so the backend @RequestPart("ticket") and
+ * optional MultipartFile[] "files" are handled correctly.
  * @param {Object} ticketData - The incident details.
+ * @param {File[]} [files=[]] - Optional array of file attachments.
  * @returns {Promise<Object>} The created ticket data.
  */
-export const createTicket = async (ticketData) => {
+export const createTicket = async (ticketData, files = []) => {
   try {
-    const response = await axios.post(API_BASE_URL, ticketData);
+    const formData = new FormData();
+    formData.append('ticket', JSON.stringify(ticketData));
+
+    if (files && files.length > 0) {
+      files.forEach((file) => {
+        formData.append('files', file);
+      });
+    }
+
+    // Do NOT set Content-Type manually — Axios will set multipart/form-data
+    // with the correct boundary automatically.
+    const response = await axios.post(API_BASE_URL, formData);
     return response.data;
   } catch (error) {
     console.error('Error creating ticket:', error);
@@ -63,9 +77,25 @@ export const getAllTickets = async () => {
   }
 };
 
+/**
+ * Fetches only the tickets submitted by a specific user.
+ * @param {string} userId - The logged-in user's ID.
+ * @returns {Promise<Array>} An array of ticket objects belonging to the user.
+ */
+export const getTicketsByUserId = async (userId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}?userId=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user tickets:', error);
+    throw error.response?.data || new Error('Failed to fetch user tickets');
+  }
+};
+
 export default {
   createTicket,
   getTicketById,
   updateTicketStatus,
-  getAllTickets
+  getAllTickets,
+  getTicketsByUserId
 };

@@ -47,7 +47,13 @@ public class TicketController {
     }
 
     @GetMapping
-    public ResponseEntity<java.util.List<IncidentTicket>> getAllTickets() {
+    public ResponseEntity<java.util.List<IncidentTicket>> getTickets(
+            @RequestParam(value = "userId", required = false) String userId) {
+        if (userId != null && !userId.isBlank()) {
+            // Regular user: return only their own submitted tickets
+            return ResponseEntity.ok(ticketService.getTicketsByUserId(userId));
+        }
+        // Admin (or no filter): return all tickets
         return ResponseEntity.ok(ticketService.getAllTickets());
     }
 

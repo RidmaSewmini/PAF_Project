@@ -14,6 +14,7 @@ import GoogleLoginSuccess from "./modules/user/pages/GoogleLoginSuccess";
 import AdminLogin from "./modules/admin/pages/AdminLogin";
 import AdminDashboard from "./modules/admin/pages/AdminDashboard";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 import UserProfilePage from "./modules/user/pages/UserProfilePage";
 import AdminProfilePage from "./modules/admin/pages/AdminProfilePage";
 import NotificationsPage from "./modules/notification/pages/NotificationsPage";
@@ -87,8 +88,8 @@ function App() {
             <Route path="/admin/settings" element={<ProtectedAdminRoute><AdminSettingsPage /></ProtectedAdminRoute>} />
 
             {/* ── Ticket module routes ───────────────────────────────────────── */}
-            <Route path="/tickets" element={<TicketDashboard />} />
-            <Route path="/report-incident" element={<IncidentForm />} />
+            <Route path="/tickets" element={<ProtectedRoute><TicketDashboard /></ProtectedRoute>} />
+            <Route path="/report-incident" element={<ProtectedRoute><IncidentForm /></ProtectedRoute>} />
           </Routes>
         </Router>
       </AuthProvider>
