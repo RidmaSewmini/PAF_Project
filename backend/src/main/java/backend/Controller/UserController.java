@@ -7,6 +7,8 @@ import backend.email.EmailService;
 import backend.service.AuditService;
 import backend.service.ImageService;
 import backend.service.NotificationService;
+import backend.service.SessionService;
+import backend.Model.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +44,9 @@ public class UserController {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private SessionService sessionService;
+
     // Create new user
     @PostMapping("/users")
     public UserModel newUserModel(@RequestBody UserModel newUserModel) {
@@ -64,7 +69,7 @@ public class UserController {
 
     // User Login
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UserModel loginDetails) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserModel loginDetails, HttpServletRequest request) {
         UserModel user = userRepository.findAllByEmail(loginDetails.getEmail())
                 .orElseThrow(() -> new UserNotFoundException(loginDetails.getEmail()));
 
@@ -73,10 +78,13 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(Map.of("message", "Access denied. Use admin login."));
             }
+            Session session = sessionService.createSession(user.getId(), request);
+            
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Login successful");
             response.put("id", user.getId());
             response.put("role", user.getRole().toString());
+            response.put("sessionId", session.getId());
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -86,7 +94,7 @@ public class UserController {
 
     // Admin Login
     @PostMapping("/admin/login")
-    public ResponseEntity<Map<String, Object>> adminLogin(@RequestBody UserModel loginDetails) {
+    public ResponseEntity<Map<String, Object>> adminLogin(@RequestBody UserModel loginDetails, HttpServletRequest request) {
         UserModel user = userRepository.findAllByEmail(loginDetails.getEmail())
                 .orElseThrow(() -> new UserNotFoundException(loginDetails.getEmail()));
 
@@ -95,10 +103,13 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(Map.of("message", "Forbidden: Not an admin"));
             }
+            Session session = sessionService.createSession(user.getId(), request);
+            
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Login successful");
             response.put("id", user.getId());
             response.put("role", user.getRole().toString());
+            response.put("sessionId", session.getId());
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

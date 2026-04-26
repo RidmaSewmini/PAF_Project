@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ActiveSessionsSection from "./ActiveSessionsSection";
 
 export default function ProfileLayout({ userData, onUpdateProfile, onChangePassword, onUploadPhoto, onRemovePhoto, role, loading }) {
   const fileInputRef = useRef(null);
@@ -317,11 +318,15 @@ export default function ProfileLayout({ userData, onUpdateProfile, onChangePassw
             </button>
           </div>
         </div>
+      </div>
 
-        {/* DANGER ZONE */}
-        <div className="md:col-span-2 bg-red-50/50 border border-red-200/50 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
-          <div className="absolute -right-10 -bottom-10 opacity-5 pointer-events-none text-[160px]">
-            ⚠️
+      {/* ACTIVE SESSIONS */}
+      <ActiveSessionsSection />
+
+      {/* DANGER ZONE */}
+      <div className="md:col-span-2 bg-red-50/50 border border-red-200/50 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative mt-8">
+        <div className="absolute -right-10 -bottom-10 opacity-5 pointer-events-none text-[160px]">
+          ⚠️
           </div>
           <div className="space-y-1 relative z-10 text-center md:text-left text-red-900">
             <h3 className="text-xl font-titillium font-extrabold text-red-600">Danger Zone</h3>
@@ -332,7 +337,7 @@ export default function ProfileLayout({ userData, onUpdateProfile, onChangePassw
           </button>
         </div>
 
-      </div>
+      {/* h-10 spacing MUST be inside or wrapped */}
       <div className="h-10"></div>
     </div>
   );

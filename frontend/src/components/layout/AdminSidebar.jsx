@@ -28,7 +28,7 @@ export default function AdminSidebar() {
     { label: "Notifications", path: "/admin/notifications", icon: <Bell />, badge: unseenCount },
     { label: "Users",         path: "/admin/users",         icon: <Users /> },
     { label: "Audit Logs",    path: "/admin/audit",         icon: <ClipboardList /> },
-    { label: "Tickets",       path: "/tickets",             icon: <Ticket /> }, 
+    { label: "Tickets",       path: "/tickets-admin",       icon: <Ticket /> }, 
     { label: "Bookings",      path: "/admin/bookings",      icon: <BookOpen /> },
     { label: "User Roles",    path: "/admin/roles",         icon: <Shield /> },
     { label: "Broadcasts",    path: "/admin/broadcasts",    icon: <Radio /> },

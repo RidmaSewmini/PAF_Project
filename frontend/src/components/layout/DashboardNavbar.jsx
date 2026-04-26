@@ -14,6 +14,7 @@ const DashboardNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("rememberMe");
+    localStorage.removeItem("sessionId");
     navigate("/login");
   };
 

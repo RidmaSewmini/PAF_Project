@@ -105,6 +105,9 @@ function Login() {
       if (response.data.id) {
         localStorage.setItem("userId", response.data.id);
         localStorage.setItem("role", response.data.role);
+        if (response.data.sessionId) {
+          localStorage.setItem("sessionId", response.data.sessionId);
+        }
         if (rememberMe) localStorage.setItem("rememberMe", "true");
         // Navigate to dashboard after successful login
         if (response.data.role === "ADMIN") {

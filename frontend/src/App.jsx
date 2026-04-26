@@ -29,7 +29,8 @@ import MyBookings from "./modules/booking/pages/MyBookings";
 import AdminBookings from "./modules/booking/pages/AdminBookings";
 
 // ── Ticket module pages ────────────────────────────────────────────────────
-import TicketDashboard from "./modules/ticket/pages/TicketDashboard";
+import TicketDashboardUser from "./modules/ticket/pages/TicketDashboardUser";
+import TicketDashboardAdmin from "./modules/ticket/pages/TicketDashboardAdmin";
 import IncidentForm from "./modules/ticket/component/IncidentForm";
 
 import "./App.css";
@@ -88,7 +89,8 @@ function App() {
             <Route path="/admin/settings" element={<ProtectedAdminRoute><AdminSettingsPage /></ProtectedAdminRoute>} />
 
             {/* ── Ticket module routes ───────────────────────────────────────── */}
-            <Route path="/tickets" element={<ProtectedRoute><TicketDashboard /></ProtectedRoute>} />
+            <Route path="/tickets-user" element={<ProtectedRoute><TicketDashboardUser /></ProtectedRoute>} />
+            <Route path="/tickets-admin" element={<ProtectedAdminRoute><TicketDashboardAdmin /></ProtectedAdminRoute>} />
             <Route path="/report-incident" element={<ProtectedRoute><IncidentForm /></ProtectedRoute>} />
           </Routes>
         </Router>

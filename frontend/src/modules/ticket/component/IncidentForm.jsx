@@ -35,7 +35,7 @@ const IncidentForm = () => {
       setFormData({ category: '', description: '', location: '', priority: 'LOW', preferredContact: '' });
       setFiles([]);
       // Redirect after 1.5s so the user sees the success message
-      setTimeout(() => navigate('/tickets'), 1500);
+      setTimeout(() => navigate('/tickets-user'), 1500);
     } catch (err) {
       setStatus({ loading: false, error: err.message || 'Failed to submit', success: false });
     }

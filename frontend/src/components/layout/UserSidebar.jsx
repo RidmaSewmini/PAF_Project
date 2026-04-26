@@ -10,7 +10,7 @@ export default function UserSidebar() {
   const navItems = [
     { label: "Dashboard", path: "/dashboard", icon: <LayoutDashboard /> },
     { label: "Bookings", path: "/student/facilities", icon: <Calendar /> },
-    { label: "Tickets", path: "/tickets", icon: <Ticket /> },
+    { label: "Tickets", path: "/tickets-user", icon: <Ticket /> },
     { label: "Notifications", path: "/notifications", icon: <Bell />, badge: unseenCount > 0 ? unseenCount : 0 },
     { label: "My Profile", path: "/profile", icon: <User /> },
   ];

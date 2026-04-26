@@ -2,6 +2,7 @@ package backend.Security;
 
 import backend.Model.UserModel;
 import backend.Repository.UserRepository;
+import backend.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -20,6 +21,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SessionService sessionService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -75,6 +79,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("http://localhost:3000/login?error=invalid_mode");
             return;
         }
+
+        sessionService.createSession(user.getId(), request);
 
         // Construct response redirect to frontend
         String redirectUrl = String.format("http://localhost:3000/google-login-success?userId=%s&role=%s&email=%s",
