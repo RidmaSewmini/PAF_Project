@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+/**
+ * Explicit MongoDB configuration for Atlas SRV connection strings.
+ */
 @Configuration
 @EnableMongoRepositories(basePackages = {"backend.Repository", "backend.notification", "backend.audit", "backend.settings"})
 public class MongoConfig extends AbstractMongoClientConfiguration {

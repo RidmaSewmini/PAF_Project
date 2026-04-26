@@ -80,9 +80,9 @@ const HowItWorks = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="font-titillium text-4xl font-extrabold text-on-surface tracking-tight mb-4">
+          <h2 className="font-headline text-4xl font-extrabold text-on-surface tracking-tight mb-4">
             How{" "}
-            <span className="font-aldrich gradient-text">CampusFlow</span>{" "}
+            <span className="editorial-text gradient-text">CampusFlow</span>{" "}
             Works
           </h2>
           <p className="text-sm text-on-surface/50 max-w-md mx-auto">
@@ -117,7 +117,7 @@ const HowItWorks = () => {
                 STEP {step.step}
               </span>
 
-              <h3 className="font-titillium font-bold text-base text-on-surface mb-2">
+              <h3 className="font-headline font-bold text-base text-on-surface mb-2">
                 {step.title}
               </h3>
               <p className="text-sm text-on-surface/55 leading-relaxed max-w-[180px]">

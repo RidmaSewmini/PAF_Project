@@ -1,12 +1,23 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { User, Mail, Lock, AlertCircle, ArrowRight } from "lucide-react";
 
 // ─── Animated input field ─────────────────────────────────────────────────────
-const FormInput = ({ id, label, type, name, value, onChange, placeholder, icon, required }) => {
+const FormInput = ({
+  id,
+  label,
+  type,
+  name,
+  value,
+  onChange,
+  placeholder,
+  icon,
+  required,
+}) => {
   const [focused, setFocused] = useState(false);
+
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-on-surface/70 mb-1.5">
@@ -21,7 +32,6 @@ const FormInput = ({ id, label, type, name, value, onChange, placeholder, icon, 
         transition={{ duration: 0.2 }}
         className="relative rounded-full"
       >
-        {/* Icon */}
         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface/35 pointer-events-none z-10">
           {icon}
         </div>
@@ -52,16 +62,15 @@ const avatarUrls = [
   "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&q=80",
 ];
 
-// ─── Main Register Component ──────────────────────────────────────────────────
 function Register() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [user, setUser] = useState({ name: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState("");
-  const location = useLocation();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -75,7 +84,6 @@ function Register() {
   const getPasswordStrength = (currPassword) => {
     if (!currPassword) return "";
     let score = 0;
-
     if (currPassword.length >= 8) score++;
     if (/[A-Z]/.test(currPassword)) score++;
     if (/\d/.test(currPassword)) score++;
@@ -83,49 +91,40 @@ function Register() {
 
     if (score <= 1) return "Weak";
     if (score === 2 || score === 3) return "Medium";
-    if (score === 4) return "Strong";
+    return "Strong";
   };
 
   const onInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    setFormErrors((prev) => ({
-      ...prev,
-      [e.target.name]: ""
-    }));
-
+    setFormErrors((prev) => ({ ...prev, [e.target.name]: "" }));
     if (e.target.name === "password") {
       setPasswordStrength(getPasswordStrength(e.target.value));
     }
   };
 
-  // ── Validation logic ─────────────────────────────────────────────────────────
   const validateForm = () => {
     const errors = {};
 
-    // 1. Check empty fields
     if (!name.trim() || !email.trim() || !password.trim()) {
       errors.general = "All fields are required";
     }
 
-    // 2. Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.(com)$/;
     if (email && !emailRegex.test(email)) {
       errors.email = "Please enter a valid email address";
     }
 
-    // 3. Validate password
     if (password && getPasswordStrength(password) === "Weak") {
-      errors.password = "Password is too weak. Use at least 8 characters with uppercase, number, or special character.";
+      errors.password =
+        "Password is too weak. Use at least 8 characters with uppercase, number, or special character.";
     }
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  // ── Backend call — identical logic to original ────────────────────────────
   const onSubmit = async (e) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
 
     setError("");
@@ -143,12 +142,7 @@ function Register() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-12"
-      style={{
-        background: "linear-gradient(135deg, #5b3cdd 0%, #7459f7 60%, #6b4df5 100%)",
-      }}
-    >
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-12 bg-brand-gradient">
       {/* ── Decorative background blobs ─────────────────────────────────── */}
       <motion.div
         animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.4, 0.25] }}
@@ -160,7 +154,7 @@ function Register() {
         animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.3, 0.15] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
         className="absolute bottom-[-100px] right-[-80px] w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: "rgba(161,46,112,0.25)", filter: "blur(70px)" }}
+        style={{ background: "rgb(var(--cf-accent) / 0.22)", filter: "blur(70px)" }}
       />
       <motion.div
         animate={{ x: [0, 20, 0], y: [0, -20, 0] }}
@@ -211,7 +205,7 @@ function Register() {
                 />
               </svg>
             </div>
-            <span className="font-titillium font-extrabold text-xl text-on-surface tracking-tight">
+            <span className="font-headline font-extrabold text-xl text-on-surface tracking-tight">
               CampusFlow
             </span>
           </motion.div>
@@ -223,14 +217,11 @@ function Register() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="text-center mb-7"
           >
-            <h1 className="font-titillium text-[2rem] font-extrabold text-on-surface tracking-tight leading-tight mb-2">
+            <h1 className="font-headline text-[2rem] font-extrabold text-on-surface tracking-tight leading-tight mb-2">
               Create Account
             </h1>
             <p className="text-sm text-on-surface/55">
-              Join the{" "}
-              <span className="font-aldrich text-primary text-[15px]">
-                academic futurist
-              </span>{" "}
+              Join the <span className="editorial-text text-primary text-[15px]">academic futurist</span>{" "}
               community
             </p>
           </motion.div>
@@ -252,14 +243,12 @@ function Register() {
             )}
           </AnimatePresence>
 
-          {/* General inline validation error */}
           {formErrors.general && (
             <div className="bg-red-50 border border-red-200 text-red-600 text-xs px-4 py-3 rounded-2xl mb-4">
               {formErrors.general}
             </div>
           )}
 
-          {/* Form */}
           <motion.form
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -268,22 +257,18 @@ function Register() {
             noValidate
             className="space-y-4"
           >
-            {/* Username */}
-            <div>
-              <FormInput
-                id="name"
-                label="Username"
-                type="text"
-                name="name"
-                value={name}
-                onChange={onInputChange}
-                placeholder="Choose a unique handle"
-                required
-                icon={<User className="w-4 h-4" />}
-              />
-            </div>
+            <FormInput
+              id="name"
+              label="Username"
+              type="text"
+              name="name"
+              value={name}
+              onChange={onInputChange}
+              placeholder="Choose a unique handle"
+              required
+              icon={<User className="w-4 h-4" />}
+            />
 
-            {/* Email */}
             <div>
               <FormInput
                 id="email"
@@ -301,7 +286,6 @@ function Register() {
               )}
             </div>
 
-            {/* Password */}
             <div>
               <FormInput
                 id="password"
@@ -314,6 +298,7 @@ function Register() {
                 required
                 icon={<Lock className="w-4 h-4" />}
               />
+
               {password && (
                 <div className="mt-2 ml-1">
                   <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
@@ -322,10 +307,10 @@ function Register() {
                         passwordStrength === "Weak"
                           ? "w-1/3 bg-red-500"
                           : passwordStrength === "Medium"
-                          ? "w-2/3 bg-yellow-500"
-                          : passwordStrength === "Strong"
-                          ? "w-full bg-green-500"
-                          : "w-0"
+                            ? "w-2/3 bg-yellow-500"
+                            : passwordStrength === "Strong"
+                              ? "w-full bg-green-500"
+                              : "w-0"
                       }`}
                     />
                   </div>
@@ -334,10 +319,10 @@ function Register() {
                       passwordStrength === "Weak"
                         ? "text-red-500"
                         : passwordStrength === "Medium"
-                        ? "text-yellow-600"
-                        : passwordStrength === "Strong"
-                        ? "text-green-600"
-                        : ""
+                          ? "text-yellow-600"
+                          : passwordStrength === "Strong"
+                            ? "text-green-600"
+                            : ""
                     }`}
                   >
                     {passwordStrength && `Password Strength: ${passwordStrength}`}
@@ -354,7 +339,6 @@ function Register() {
               )}
             </div>
 
-            {/* Register button */}
             <motion.button
               type="submit"
               disabled={loading}
@@ -374,17 +358,13 @@ function Register() {
               ) : (
                 <>
                   Register
-                  <motion.div
-                    animate={{ x: 0 }}
-                    whileHover={{ x: 4 }}
-                  >
+                  <motion.div animate={{ x: 0 }} whileHover={{ x: 4 }}>
                     <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
                   </motion.div>
                 </>
               )}
             </motion.button>
 
-            {/* Google Register Divider and Button */}
             <div className="relative flex items-center py-2 mt-4">
               <div className="flex-grow border-t border-surface-container-highest/60"></div>
               <span className="flex-shrink-0 mx-4 text-[10px] font-bold text-on-surface/40 uppercase tracking-widest">
@@ -396,22 +376,34 @@ function Register() {
             <motion.button
               type="button"
               onClick={() => {
-                window.location.href = "http://localhost:8080/oauth2/authorization/google?mode=register";
+                window.location.href =
+                  "http://localhost:8080/oauth2/authorization/google?mode=register";
               }}
               whileHover={{ scale: 1.02, y: -1 }}
               whileTap={{ scale: 0.98 }}
               className="w-full py-3.5 rounded-full bg-white border border-surface-container-highest text-on-surface font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2.5 mt-2"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+                <path
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  fill="#4285F4"
+                />
+                <path
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                  fill="#34A853"
+                />
+                <path
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                  fill="#FBBC05"
+                />
+                <path
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                  fill="#EA4335"
+                />
                 <path d="M1 1h22v22H1z" fill="none" />
               </svg>
               Register with Google
             </motion.button>
-
           </motion.form>
 
           {/* Login link */}
@@ -457,7 +449,6 @@ function Register() {
         transition={{ delay: 0.9, duration: 0.55 }}
         className="absolute bottom-6 left-0 right-0 flex items-center justify-between px-8 sm:px-12"
       >
-        {/* Avatar stack */}
         <div className="flex items-center">
           {avatarUrls.map((url, i) => (
             <motion.div
@@ -478,7 +469,6 @@ function Register() {
           ))}
         </div>
 
-        {/* Social proof text */}
         <p className="text-[10px] font-bold tracking-widest text-white/50 uppercase">
           Join 40,000+ Educators
         </p>

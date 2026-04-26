@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import { useNotifications } from "../../context/NotificationContext";
 import { useAuth } from "../../context/AuthContext";
-import { LayoutDashboard, Bell, Users, ClipboardList, User, Shield, Radio, Key, Settings, UserCircle } from "lucide-react";
+import { LayoutDashboard, Bell, Users, ClipboardList, User, Shield, Radio, Key, Settings, UserCircle, Building2, BookOpen } from "lucide-react";
 
 export default function AdminSidebar() {
   const { unseenCount } = useNotifications();
@@ -11,16 +11,18 @@ export default function AdminSidebar() {
   const location = useLocation();
 
   const navItems = [
-    { label: "Dashboard", path: "/admin-dashboard", icon: <LayoutDashboard /> },
+    { label: "Dashboard",     path: "/admin-dashboard",    icon: <LayoutDashboard /> },
     { label: "Notifications", path: "/admin/notifications", icon: <Bell />, badge: unseenCount },
-    { label: "Users", path: "/admin/users", icon: <Users /> },
-    { label: "Audit Logs", path: "/admin/audit", icon: <ClipboardList /> },
-    { label: "Tickets", path: "/dashboard", icon: <User /> },
-    { label: "Bookings", path: "/admin/roles", icon: <Shield /> },
-    { label: "Analytics", path: "/admin/broadcasts", icon: <Radio /> },
-    { label: "Auth Logs", path: "/admin/auth-logs", icon: <Key /> },
-    { label: "Settings", path: "/admin/settings", icon: <Settings /> },
-    { label: "My Profile", path: "/admin/profile", icon: <UserCircle /> },
+    { label: "Users",         path: "/admin/users",         icon: <Users /> },
+    { label: "Audit Logs",    path: "/admin/audit",         icon: <ClipboardList /> },
+    { label: "Tickets",       path: "/dashboard",           icon: <User /> },
+    { label: "Bookings",      path: "/admin/bookings",      icon: <BookOpen /> },
+    { label: "User Roles",    path: "/admin/roles",         icon: <Shield /> },
+    { label: "Broadcasts",    path: "/admin/broadcasts",    icon: <Radio /> },
+    { label: "Auth Logs",     path: "/admin/auth-logs",     icon: <Key /> },
+    { label: "Facilities",    path: "/admin/facilities",    icon: <Building2 /> },
+    { label: "Settings",      path: "/admin/settings",      icon: <Settings /> },
+    { label: "My Profile",    path: "/admin/profile",       icon: <UserCircle /> },
   ];
 
   return (
