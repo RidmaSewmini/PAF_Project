@@ -27,6 +27,10 @@ import BookingForm from "./modules/booking/pages/BookingForm";
 import MyBookings from "./modules/booking/pages/MyBookings";
 import AdminBookings from "./modules/booking/pages/AdminBookings";
 
+// ── Ticket module pages ────────────────────────────────────────────────────
+import TicketDashboard from "./modules/ticket/pages/TicketDashboard";
+import IncidentForm from "./modules/ticket/component/IncidentForm";
+
 import "./App.css";
 
 import { NotificationProvider } from "./context/NotificationContext";
@@ -81,6 +85,10 @@ function App() {
             <Route path="/admin/users" element={<ProtectedAdminRoute><AdminUsersPage /></ProtectedAdminRoute>} />
             <Route path="/admin/audit" element={<ProtectedAdminRoute><AdminAuditPage /></ProtectedAdminRoute>} />
             <Route path="/admin/settings" element={<ProtectedAdminRoute><AdminSettingsPage /></ProtectedAdminRoute>} />
+
+            {/* ── Ticket module routes ───────────────────────────────────────── */}
+            <Route path="/tickets" element={<TicketDashboard />} />
+            <Route path="/report-incident" element={<IncidentForm />} />
           </Routes>
         </Router>
       </AuthProvider>

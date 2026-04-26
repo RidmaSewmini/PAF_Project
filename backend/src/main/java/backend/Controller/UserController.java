@@ -47,7 +47,7 @@ public class UserController {
     public UserModel newUserModel(@RequestBody UserModel newUserModel) {
         newUserModel.setPassword(passwordEncoder.encode(newUserModel.getPassword()));
         newUserModel.setRole(UserModel.Role.USER);
-        
+
         // Generate Verification Code
         String code = String.format("%06d", new Random().nextInt(999999));
         newUserModel.setVerificationCode(code);
@@ -58,7 +58,7 @@ public class UserController {
         
         // Send Verification Email
         emailService.sendVerificationEmail(savedUser.getEmail(), code);
-        
+
         return savedUser;
     }
 
@@ -142,7 +142,7 @@ public class UserController {
     ) {
         return userRepository.findById(id).map(userModel -> {
             boolean hasChanges = false;
-            
+
             if (newUserModel.getName() != null && !newUserModel.getName().equals(userModel.getName())) {
                 userModel.setName(newUserModel.getName());
                 hasChanges = true;
@@ -176,6 +176,7 @@ public class UserController {
                     "Your profile was updated by admin",
                     "PROFILE_UPDATE"
                 );
+
             }
 
             if (hasChanges) {
@@ -221,10 +222,6 @@ public class UserController {
 
     // ── Profile and Password Endpoints ─────────────────────────────────────
 
-    // ── Profile and Password Endpoints ─────────────────────────────────────
-
-
-
     @PutMapping("/users/{id}/profile")
     public UserModel updateUserProfile(
             @PathVariable String id,
@@ -234,6 +231,7 @@ public class UserController {
             boolean isUpdated = false;
             // Update name
             if (profileData.getName() != null && !profileData.getName().isEmpty() && !profileData.getName().equals(user.getName())) {
+
                 user.setName(profileData.getName());
                 isUpdated = true;
             }
@@ -242,7 +240,7 @@ public class UserController {
                 user.setPassword(passwordEncoder.encode(profileData.getPassword()));
                 isUpdated = true;
             }
-            
+
             UserModel savedUser = userRepository.save(user);
 
             if (isUpdated) {
@@ -269,6 +267,7 @@ public class UserController {
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.<String, Object>of("message", "Incorrect current password"));
+
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
@@ -297,6 +296,7 @@ public class UserController {
 
             return ResponseEntity.ok(Map.<String, Object>of("message", "Password reset instructions sent"));
         }).orElse(ResponseEntity.ok(Map.<String, Object>of("message", "If an account exists, reset instructions have been sent")));
+
     }
 
     @PostMapping("/users/reset-password/confirm")
@@ -310,6 +310,7 @@ public class UserController {
 
         return userRepository.findByResetToken(token).map(user -> {
             if (user.getTokenExpiry() == null || user.getTokenExpiry().before(new java.util.Date())) {
+
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.<String, Object>of("message", "Token expired"));
             }
 
@@ -323,18 +324,20 @@ public class UserController {
 
             return ResponseEntity.ok(Map.<String, Object>of("message", "Password reset successfully"));
         }).orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.<String, Object>of("message", "Invalid token")));
+
     }
 
     @PostMapping("/users/profile-image")
     public ResponseEntity<Map<String, Object>> uploadUserProfileImage(
             @RequestParam("userId") String userId,
             @RequestParam("file") MultipartFile file) {
-        
+
         UserModel user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
 
         try {
             if (file.getSize() > 5 * 1024 * 1024) {
+
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.<String, Object>of("message", "File too large. Max size is 5MB."));
             }
             
@@ -350,6 +353,7 @@ public class UserController {
             return ResponseEntity.ok(Map.<String, Object>of("message", "Profile image updated successfully", "url", uploadResult.get("url")));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.<String, Object>of("message", e.getMessage()));
+
         }
     }
 
