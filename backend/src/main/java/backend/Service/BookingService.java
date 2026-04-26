@@ -1,7 +1,10 @@
 package backend.service;
 
 import backend.Model.BookingModel;
+import backend.Model.UserModel;
 import backend.Repository.BookingRepository;
+import backend.Repository.UserRepository;
+import backend.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,6 +14,12 @@ public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     // Get all bookings (Admin)
     public List<BookingModel> getAllBookings() {
@@ -46,7 +55,19 @@ public class BookingService {
 
         // No conflict — save as PENDING
         booking.setStatus("PENDING");
-        return bookingRepository.save(booking);
+        BookingModel saved = bookingRepository.save(booking);
+
+        // Notify all admins about new booking request
+        List<UserModel> admins = userRepository.findByRole(UserModel.Role.ADMIN);
+        for (UserModel admin : admins) {
+            notificationService.createNotification(
+                admin.getId(),
+                "New booking request from user " + booking.getUserId() + " is pending your approval.",
+                "BOOKING_REQUEST"
+            );
+        }
+
+        return saved;
     }
 
     // Admin approves a booking
@@ -58,7 +79,16 @@ public class BookingService {
         }
 
         booking.setStatus("APPROVED");
-        return bookingRepository.save(booking);
+        BookingModel saved = bookingRepository.save(booking);
+
+        // Notify the student their booking was approved
+        notificationService.createNotification(
+            booking.getUserId(),
+            "Your booking for resource " + booking.getResourceId() + " has been approved!",
+            "BOOKING_APPROVED"
+        );
+
+        return saved;
     }
 
     // Admin rejects a booking with a reason
@@ -71,14 +101,23 @@ public class BookingService {
 
         booking.setStatus("REJECTED");
         booking.setRejectionReason(reason);
-        return bookingRepository.save(booking);
+        BookingModel saved = bookingRepository.save(booking);
+
+        // Notify the student their booking was rejected
+        notificationService.createNotification(
+            booking.getUserId(),
+            "Your booking for resource " + booking.getResourceId() + " has been rejected. Reason: " + reason,
+            "BOOKING_REJECTED"
+        );
+
+        return saved;
     }
 
     // User cancels their own booking
     public BookingModel cancelBooking(String id) {
         BookingModel booking = getBookingById(id);
 
-        if (!booking.getStatus().equals("APPROVED") && 
+        if (!booking.getStatus().equals("APPROVED") &&
             !booking.getStatus().equals("PENDING")) {
             throw new RuntimeException("Only APPROVED or PENDING bookings can be cancelled.");
         }

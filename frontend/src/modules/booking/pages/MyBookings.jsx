@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBookingsByUser, cancelBooking } from "../services/bookingService";
+import { QRCodeSVG } from "qrcode.react";
 
 const STATUS_STYLES = {
   PENDING:   "bg-yellow-100 text-yellow-700",
@@ -65,7 +66,6 @@ export default function MyBookings() {
     }
   };
 
-  // ── Loading state ──────────────────────────────────────────────
   if (loading) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
@@ -87,7 +87,7 @@ export default function MyBookings() {
             </p>
           </div>
           <button
-            onClick={() => navigate("/bookings/new")}
+            onClick={() => navigate("/student/facilities")}
             className="bg-primary hover:bg-primary-container text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-card transition-colors"
           >
             + New Booking
@@ -106,10 +106,10 @@ export default function MyBookings() {
           <div className="glass-panel rounded-3xl border border-surface-container-highest shadow-card p-12 text-center">
             <p className="text-on-surface/45 text-sm">You have no bookings yet.</p>
             <button
-              onClick={() => navigate("/bookings/new")}
+              onClick={() => navigate("/student/facilities")}
               className="mt-4 text-sm text-primary hover:underline"
             >
-              Make your first booking →
+              Browse facilities to make a booking →
             </button>
           </div>
         )}
@@ -120,12 +120,20 @@ export default function MyBookings() {
             const isCancellable =
               booking.status === "PENDING" || booking.status === "APPROVED";
 
+            const qrData = JSON.stringify({
+              bookingId: booking.id,
+              resourceId: booking.resourceId,
+              userId: booking.userId,
+              startTime: booking.startTime,
+              endTime: booking.endTime,
+            });
+
             return (
               <div
                 key={booking.id}
                 className="glass-panel rounded-3xl border border-surface-container-highest shadow-card p-6"
               >
-                {/* Top row: resource ID + status badge */}
+                {/* Top row */}
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-sm font-semibold text-on-surface">
@@ -174,6 +182,23 @@ export default function MyBookings() {
                   </div>
                 )}
 
+                {/* QR Code — only for APPROVED bookings */}
+                {booking.status === "APPROVED" && (
+                  <div className="mt-4 p-4 bg-green-50 border border-green-100 rounded-2xl flex items-center gap-6">
+                    <QRCodeSVG
+                      value={qrData}
+                      size={100}
+                      bgColor="#f0fdf4"
+                      fgColor="#166534"
+                      level="M"
+                    />
+                    <div>
+                      <p className="text-sm font-bold text-green-800 mb-1">Booking Approved!</p>
+                      <p className="text-xs text-green-700">Show this QR code at the facility entrance to check in.</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Cancel action */}
                 {isCancellable && (
                   <div className="mt-4 flex justify-end">
@@ -190,7 +215,6 @@ export default function MyBookings() {
             );
           })}
         </div>
-
       </div>
     </div>
   );

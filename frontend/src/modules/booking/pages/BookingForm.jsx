@@ -1,21 +1,28 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
+
+const FACILITY_TYPES = ["LAB", "LECTURE_HALL", "MEETING_ROOM", "EQUIPMENT"];
+const FACILITY_STATUSES = ["ACTIVE", "OUT_OF_SERVICE"];
 
 export default function BookingForm({ initialValues, onSaved }) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const facilityId = searchParams.get("facilityId") || "";
+  const facilityName = searchParams.get("facilityName") || facilityId;
 
   const initial = useMemo(
     () =>
       initialValues || {
-        resourceId: "",        // ✅ fixed: was facilityId
+        resourceId: facilityId,
         userId: localStorage.getItem("userId") || "",
         startTime: "",
         endTime: "",
         purpose: "",
         expectedAttendees: "",
       },
-    [initialValues]
+    [initialValues, facilityId]
   );
 
   const [values, setValues] = useState(initial);
@@ -32,7 +39,6 @@ export default function BookingForm({ initialValues, onSaved }) {
     setLoading(true);
     setError("");
 
-    // Basic client-side time validation
     if (values.startTime && values.endTime && values.startTime >= values.endTime) {
       setError("End time must be after start time.");
       setLoading(false);
@@ -77,7 +83,7 @@ export default function BookingForm({ initialValues, onSaved }) {
           </button>
           <h1 className="text-2xl font-bold text-on-surface">New Booking</h1>
           <p className="text-sm text-on-surface/55 mt-1">
-            Fill in the details to request a facility booking.
+            Fill in the details to request a booking for <span className="font-semibold text-on-surface/80">{facilityName}</span>.
           </p>
         </div>
 
@@ -85,35 +91,14 @@ export default function BookingForm({ initialValues, onSaved }) {
         <div className="glass-panel rounded-3xl shadow-card border border-surface-container-highest p-8">
           <form onSubmit={onSubmit} className="space-y-6">
 
-            {/* Resource ID */}
+            {/* Facility — read only */}
             <div>
               <label className="block text-sm font-medium text-on-surface/70 mb-1">
-                Facility ID <span className="text-red-500">*</span>
+                Facility
               </label>
               <input
-                name="resourceId"
-                value={values.resourceId}
-                onChange={onChange}
-                placeholder="Enter the facility ID"
-                required
-                className="w-full bg-surface-container-lowest border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/80 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition"
-              />
-              <p className="text-xs text-on-surface/45 mt-1">
-                You can find this on the Facilities page.
-              </p>
-            </div>
-
-            {/* User ID — pre-filled, read only */}
-            <div>
-              <label className="block text-sm font-medium text-on-surface/70 mb-1">
-                User ID
-              </label>
-              <input
-                name="userId"
-                value={values.userId}
-                onChange={onChange}
-                placeholder="User ID"
-                readOnly={Boolean(localStorage.getItem("userId"))}
+                value={facilityName}
+                readOnly
                 className="w-full bg-surface-container-low border border-surface-container-highest rounded-xl px-4 py-2.5 text-sm text-on-surface/55 focus:outline-none transition"
               />
             </div>
