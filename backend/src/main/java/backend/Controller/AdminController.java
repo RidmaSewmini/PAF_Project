@@ -89,7 +89,7 @@ public class AdminController {
     @GetMapping("/recent-users")
     public List<Map<String, String>> getRecentUsers() {
         List<Map<String, String>> users = new ArrayList<>();
-        
+
         Map<String, String> user1 = new HashMap<>();
         user1.put("name", "Alice Smith");
         user1.put("email", "alice@example.com");
@@ -153,17 +153,19 @@ public class AdminController {
     public ResponseEntity<Map<String, Object>> uploadAdminProfileImage(
             @RequestParam("userId") String userId,
             @RequestParam("file") MultipartFile file) {
-        
+
         UserModel user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Admin not found: " + userId));
 
         if (user.getRole() != UserModel.Role.ADMIN) {
              return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.<String, Object>of("message", "Only admins can use this endpoint."));
+
         }
 
         try {
             if (file.getSize() > 5 * 1024 * 1024) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.<String, Object>of("message", "File too large. Max size is 5MB."));
+
             }
 
             if (user.getProfileImagePublicId() != null) {
@@ -178,6 +180,7 @@ public class AdminController {
             return ResponseEntity.ok(Map.<String, Object>of("message", "Admin profile image updated successfully", "url", uploadResult.get("url")));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.<String, Object>of("message", e.getMessage()));
+
         }
     }
 

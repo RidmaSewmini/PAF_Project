@@ -43,15 +43,14 @@ public class AuditController {
     @GetMapping("/download")
     public ResponseEntity<byte[]> downloadAuditLogs() {
         List<AuditLog> allLogs = auditLogRepository.findAll();
-        
+
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             Document document = new Document();
             PdfWriter.getInstance(document, out);
             document.open();
-            
             document.add(new Paragraph("Audit Logs Report"));
             document.add(new Paragraph(" ")); // blank line
-            
+
             for (AuditLog log : allLogs) {
                 String logEntry = String.format("[%s] %s | Admin: %s | Target: %s",
                         log.getTimestamp(), log.getActionType(), log.getAdminName(), log.getTargetName());
@@ -63,7 +62,7 @@ public class AuditController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("attachment", "audit_logs.pdf");
-            
+        
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(out.toByteArray());

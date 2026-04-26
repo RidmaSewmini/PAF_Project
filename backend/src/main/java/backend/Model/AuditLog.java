@@ -25,7 +25,6 @@ public class AuditLog {
 
     private String status;
     private String description;
-    
     private Map<String, Object> changes;
 
     private String ipAddress;
