@@ -16,48 +16,71 @@ export default function UserSidebar() {
   ];
 
   return (
-    <aside className="w-64 h-full bg-white border-r border-surface-container-highest shadow-glass hidden lg:flex flex-col">
-      <div className="px-4 py-4 border-b border-surface-container-highest">
-        <h2 className="text-lg font-aldrich text-on-surface">User Dashboard</h2>
-        <p className="text-xs text-gray-500 font-titillium">User Management</p>
+    <aside className="w-[280px] bg-gradient-to-b from-[#5b3cdd] to-[#7459f7] flex flex-col justify-between flex-shrink-0 relative z-20 h-full overflow-hidden shadow-[4px_0_24px_rgba(91,60,221,0.15)] hidden lg:flex">
+      {/* Layer 1: Texture */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+CjxwYXRoIGQ9Ik0wIDBoODB2ODBIMHoiIGZpbGw9Im5vbmUiLz4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4=')]"></div>
+      
+      {/* Layer 2: Glass overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
+
+      <div className="overflow-y-auto relative z-10 scrollbar-hide">
+        {/* Header Section */}
+        <div className="px-10 mt-10 mb-12">
+          <h1 className="font-editorial text-white text-[2rem] tracking-tight leading-tight italic">
+            User Portal
+          </h1>
+          <p className="font-['Manrope'] text-[9px] font-bold tracking-[0.2em] text-white/70 uppercase mt-1">
+            User Management
+          </p>
+        </div>
+
+        {/* Navigation Links */}
+        <nav className="px-5 space-y-2 font-['Manrope']">
+          {navItems.map((item) => {
+            const isActive = location.pathname.startsWith(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`w-full flex items-center justify-between px-5 py-3.5 rounded-2xl transition-all font-semibold text-[14px] group ${
+                  isActive
+                    ? "bg-white text-[#5b3cdd] shadow-[0_8px_20px_rgba(0,0,0,0.12)] translate-x-1"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <div className="flex items-center gap-3 relative">
+                  {React.cloneElement(item.icon, {
+                    className: `w-5 h-5 transition-transform duration-300 ${
+                      isActive ? "text-[#5b3cdd]" : "text-white/80 group-hover:text-white"
+                    }`,
+                  })}
+                  {item.label}
+                </div>
+                {item.badge > 0 && (
+                  <span className={`px-2 py-0.5 text-[10px] font-black rounded-full shadow-sm ${
+                    isActive ? "bg-red-500 text-white" : "bg-white/20 text-white"
+                  }`}>
+                    {item.badge > 99 ? "99+" : item.badge}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
       </div>
 
-      <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
-        <div className="text-[10px] font-black uppercase tracking-[0.2em] text-on-surface/40 mb-4 px-2">Main Menu</div>
-        {navItems.map((item) => {
-          const isActive = location.pathname.startsWith(item.path);
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center justify-between w-full p-3 rounded-2xl font-bold transition-all ${
-                isActive
-                  ? "bg-primary text-white shadow-md shadow-primary/20"
-                  : "text-on-surface/60 hover:bg-surface-container-high hover:text-on-surface"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                {React.cloneElement(item.icon, { className: "w-5 h-5 text-current" })}
-                <span className="text-sm">{item.label}</span>
-              </div>
-              {item.badge > 0 && (
-                <span className={`px-2 py-0.5 text-[10px] font-black rounded-full ${isActive ? 'bg-white text-primary' : 'bg-red-500 text-white'}`}>
-                  {item.badge > 99 ? "99+" : item.badge}
-                </span>
-              )}
-            </Link>
-          );
-        })}
-      </div>
-
-      <div className="p-4 border-t border-surface-container-highest">
-        <div className="bg-surface-container-low rounded-2xl p-4 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-2xl -mt-10 -mr-10 pointer-events-none"></div>
-          <p className="text-xs font-bold text-on-surface mb-1 relative z-10">Need Help?</p>
-          <p className="text-[10px] font-medium text-on-surface/60 mb-3 relative z-10">Contact campus IT support.</p>
-          <button className="w-full py-2 bg-on-surface text-white rounded-xl text-xs font-bold hover:bg-on-surface/90 transition-colors relative z-10">
-            Open Support Ticket
-          </button>
+      {/* Bottom Glass Card */}
+      <div className="p-5 relative z-10">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex items-center gap-3 transition-colors hover:bg-white/15 cursor-pointer">
+          <div className="w-10 h-10 rounded-full bg-white text-[#5b3cdd] flex items-center justify-center font-bold text-sm shadow-md border-2 border-white/50">
+            U
+          </div>
+          <div className="font-['Manrope']">
+            <p className="text-sm font-bold text-white">User Panel</p>
+            <p className="text-[10px] text-white/70 font-semibold tracking-wider uppercase">
+              Active User
+            </p>
+          </div>
         </div>
       </div>
     </aside>
