@@ -191,7 +191,7 @@ const Dashboard = () => {
       />
       <div
         className="fixed bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-[0.06] z-0"
-        style={{ background: "radial-gradient(circle, #a12e70 0%, transparent 70%)", filter: "blur(80px)" }}
+        style={{ background: "radial-gradient(circle, #7459f7 0%, transparent 70%)", filter: "blur(80px)" }}
       />
 
       <div className="relative z-10 w-full">

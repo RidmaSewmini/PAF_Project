@@ -9,15 +9,13 @@ const NavLink = ({ to, children, onClick }) => {
     <Link
       to={to}
       onClick={onClick}
-      className={`relative text-[13px] font-bold tracking-wide transition-colors duration-200 group ${
-        isActive ? "text-primary" : "text-on-surface/70 hover:text-primary"
-      }`}
+      className={`relative text-[13px] font-bold tracking-wide transition-colors duration-200 group ${isActive ? "text-primary" : "text-on-surface/70 hover:text-primary"
+        }`}
     >
       {children}
       <span
-        className={`absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-primary transition-all duration-300 ${
-          isActive ? "w-full" : "w-0 group-hover:w-full"
-        }`}
+        className={`absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-primary transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"
+          }`}
       />
     </Link>
   );
@@ -45,15 +43,14 @@ const DefaultNav = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
+      className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
           ? "bg-white/80 backdrop-blur-md shadow-sm py-3 border-b border-surface-container-highest"
           : "bg-white border-b border-surface-container-highest py-4"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          
+
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
             <div className="w-8 h-8 rounded-xl bg-brand-gradient flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-200">

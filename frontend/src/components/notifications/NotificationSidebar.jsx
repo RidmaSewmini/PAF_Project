@@ -73,11 +73,10 @@ export default function NotificationSidebar({ isOpen, onClose }) {
                 notifications.map((notif) => (
                   <div
                     key={notif.id}
-                    className={`p-4 rounded-2xl border transition-all ${
-                      notif.isRead
+                    className={`p-4 rounded-2xl border transition-all ${notif.isRead
                         ? "bg-white border-outline-variant/30 opacity-70"
                         : "bg-primary/5 border-primary/20 shadow-sm"
-                    }`}
+                      }`}
                   >
                     <div className="flex justify-between items-start gap-4">
                       <div>
@@ -101,9 +100,8 @@ export default function NotificationSidebar({ isOpen, onClose }) {
                       {/* Read Toggle */}
                       <button
                         onClick={() => notif.isRead ? markAsUnread(notif.id) : markAsRead(notif.id)}
-                        className={`w-3 h-3 rounded-full mt-1 flex-shrink-0 transition-colors ${
-                          notif.isRead ? "bg-outline-variant hover:bg-outline" : "bg-primary hover:bg-primary/80 ring-4 ring-primary/10"
-                        }`}
+                        className={`w-3 h-3 rounded-full mt-1 flex-shrink-0 transition-colors ${notif.isRead ? "bg-outline-variant hover:bg-outline" : "bg-primary hover:bg-primary/80 ring-4 ring-primary/10"
+                          }`}
                         title={notif.isRead ? "Mark as unread" : "Mark as read"}
                       />
                     </div>

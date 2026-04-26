@@ -13,7 +13,10 @@ const CTA = () => {
         initial={{ opacity: 0, y: 32, scale: 0.97 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
         transition={{ duration: 0.75, ease: "easeOut" }}
-        className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl bg-brand-gradient"
+        className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl"
+        style={{
+          background: "linear-gradient(135deg, #5b3cdd 0%, #7459f7 100%)",
+        }}
       >
         {/* Background shimmer blobs */}
         <div
@@ -26,7 +29,7 @@ const CTA = () => {
         <div
           className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
           style={{
-            background: "radial-gradient(circle, rgb(var(--cf-accent)) 0%, transparent 70%)",
+            background: "radial-gradient(circle, #5b3cdd 0%, transparent 70%)",
             filter: "blur(40px)",
           }}
         />
@@ -55,10 +58,10 @@ const CTA = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.25, duration: 0.65 }}
-            className="font-headline text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-4"
+            className="font-titillium text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-4"
           >
             Start Managing Your{" "}
-            <span className="editorial-text opacity-90">Campus Experience</span>{" "}
+            <span className="font-aldrich opacity-90">Campus Experience</span>{" "}
             Today
           </motion.h2>
 

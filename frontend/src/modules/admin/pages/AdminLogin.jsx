@@ -137,7 +137,7 @@ function AdminLogin() {
         variants={panelVariants}
         className="hidden lg:flex lg:w-[45%] xl:w-[42%] relative flex-col justify-between p-10 overflow-hidden"
         style={{
-          background: "linear-gradient(145deg, #5b3cdd 0%, #7459f7 55%, #a12e70 100%)",
+          background: "linear-gradient(145deg, #5b3cdd 0%, #7459f7 100%)",
         }}
       >
         {/* Campus building background image */}
@@ -171,7 +171,7 @@ function AdminLogin() {
           animate={{ scale: [1, 1.08, 1], opacity: [0.1, 0.2, 0.1] }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 2 }}
           className="absolute bottom-[-60px] left-[-60px] w-56 h-56 rounded-full pointer-events-none"
-          style={{ background: "rgba(161,46,112,0.3)", filter: "blur(50px)" }}
+          style={{ background: "rgba(91,60,221,0.2)", filter: "blur(50px)" }}
         />
 
         {/* Content — relative layer above image */}

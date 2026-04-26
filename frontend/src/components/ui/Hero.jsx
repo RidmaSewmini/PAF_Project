@@ -35,7 +35,7 @@ const DashboardCard = ({ label, value, color, delay }) => (
   >
     <div className={`w-2 h-2 rounded-full mb-2 ${color}`} />
     <p className="text-xs text-on-surface/50">{label}</p>
-    <p className="text-base font-bold font-headline text-on-surface mt-0.5">{value}</p>
+    <p className="text-base font-bold font-titillium text-on-surface mt-0.5">{value}</p>
   </motion.div>
 );
 
@@ -59,7 +59,7 @@ const Hero = () => {
         className="absolute top-20 right-0 w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgb(var(--cf-secondary)) 0%, transparent 70%)",
+            "radial-gradient(circle, #7459f7 0%, transparent 70%)",
           filter: "blur(60px)",
         }}
       />
@@ -67,7 +67,7 @@ const Hero = () => {
         className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-10 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgb(var(--cf-accent)) 0%, transparent 70%)",
+            "radial-gradient(circle, #5b3cdd 0%, transparent 70%)",
           filter: "blur(80px)",
         }}
       />
@@ -92,11 +92,11 @@ const Hero = () => {
             {/* Headline */}
             <motion.h1
               variants={itemVariants}
-              className="font-headline text-5xl sm:text-6xl font-extrabold text-on-surface leading-[1.1] tracking-tight mb-6"
+              className="font-titillium text-5xl sm:text-6xl font-extrabold text-on-surface leading-[1.1] tracking-tight mb-6"
             >
               Smart Campus
               <br />
-              <span className="editorial-text gradient-text">Operations</span>{" "}
+              <span className="font-aldrich gradient-text">Operations</span>{" "}
               Made Simple
             </motion.h1>
 
@@ -152,7 +152,7 @@ const Hero = () => {
                 { value: "99.9%", label: "Uptime" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p className="font-headline text-2xl font-bold text-primary">
+                  <p className="font-titillium text-2xl font-bold text-primary">
                     {stat.value}
                   </p>
                   <p className="text-xs text-on-surface/50 mt-0.5">{stat.label}</p>
@@ -195,10 +195,10 @@ const Hero = () => {
                           originY: 1,
                           background:
                             i % 3 === 0
-                              ? "linear-gradient(180deg, rgb(var(--cf-secondary)), rgb(var(--cf-navy)))"
+                              ? "linear-gradient(180deg, #7459f7, #5b3cdd)"
                               : i % 3 === 1
-                              ? "linear-gradient(180deg, rgb(var(--cf-accent)), rgb(var(--cf-secondary)))"
-                              : "rgb(var(--cf-secondary) / 0.35)",
+                                ? "linear-gradient(180deg, #886af3, #5b3cdd)"
+                                : "#d9e3f9",
                         }}
                         className="flex-1 rounded-t-md min-w-0"
                       />
