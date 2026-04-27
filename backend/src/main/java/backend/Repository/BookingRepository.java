@@ -22,10 +22,17 @@ public interface BookingRepository extends MongoRepository<BookingModel, String>
     // Find bookings by user and status
     List<BookingModel> findByUserIdAndStatus(String userId, String status);
 
-    // THIS IS THE CONFLICT CHECK QUERY
-    // Finds any APPROVED bookings for the same resource that overlap with the requested time
-    @Query("{ 'resourceId': ?0, 'status': 'APPROVED', $or: [ { 'startTime': { $lt: ?2 }, 'endTime': { $gt: ?1 } } ] }")
+    // THIS IS THE CONFLICT CHECK QUERY (creation-time)
+    // Finds any APPROVED or PENDING bookings for the same resource that overlap with the requested time
+    @Query("{ 'resourceId': ?0, 'status': { $in: ['APPROVED','PENDING'] }, $or: [ { 'startTime': { $lt: ?2 }, 'endTime': { $gt: ?1 } } ] }")
     List<BookingModel> findConflictingBookings(String resourceId, 
                                                LocalDateTime startTime, 
                                                LocalDateTime endTime);
+
+    // Approval-time check: find any EXISTING APPROVED bookings (excluding the booking being approved)
+    @Query("{ 'resourceId': ?0, 'status': 'APPROVED', '_id': { $ne: ?3 }, $or: [ { 'startTime': { $lt: ?2 }, 'endTime': { $gt: ?1 } } ] }")
+    List<BookingModel> findConflictingApprovedBookingsExcludingId(String resourceId,
+                                                                 LocalDateTime startTime,
+                                                                 LocalDateTime endTime,
+                                                                 String excludeId);
 }

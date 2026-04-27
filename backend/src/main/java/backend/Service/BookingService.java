@@ -92,6 +92,17 @@ public class BookingService {
             throw new RuntimeException("Only PENDING bookings can be approved.");
         }
 
+        // Defensive conflict check at approval time: ensure no other APPROVED booking overlaps
+        List<BookingModel> conflicts = bookingRepository.findConflictingApprovedBookingsExcludingId(
+                booking.getResourceId(), booking.getStartTime(), booking.getEndTime(), booking.getId()
+        );
+
+        if (!conflicts.isEmpty()) {
+            throw new RuntimeException(
+                    "Cannot approve booking — conflicts with existing approved booking for the selected time."
+            );
+        }
+
         booking.setStatus("APPROVED");
         BookingModel saved = bookingRepository.save(booking);
 

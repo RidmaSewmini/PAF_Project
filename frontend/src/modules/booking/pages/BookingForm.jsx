@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { createBooking } from "../services/bookingService";
 
@@ -62,7 +63,16 @@ export default function BookingForm({ initialValues, onSaved }) {
         navigate("/my-bookings");
       }
     } catch (e2) {
-      setError(e2?.message || "Failed to create booking.");
+      const status = e2?.response?.status;
+      const serverMsg = e2?.response?.data?.error || e2?.message;
+      if (status === 409) {
+        const msg = serverMsg || "The selected time is already booked. Please choose another slot.";
+        setError(msg);
+        toast.error(msg);
+      } else {
+        const msg = serverMsg || "Failed to create booking.";
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }
