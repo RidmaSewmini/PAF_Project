@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBookingsByUser, cancelBooking } from "../services/bookingService";
 import { QRCodeSVG } from "qrcode.react";
+import toast from "react-hot-toast";
 
 // ── Status pill styles ────────────────────────────────────────────────────────
 const STATUS_STYLES = {
@@ -54,6 +55,7 @@ export default function MyBookings() {
   const [cancellingId, setCancellingId] = useState(null);
   const [activeTab,    setActiveTab]    = useState("ALL");
   const [binnedIds,    setBinnedIds]    = useState(() => getBinnedIds(userId));
+  const [removingId,   setRemovingId]   = useState(null);
 
   // ── Load bookings ───────────────────────────────────────────────────────────
   useEffect(() => {
@@ -84,6 +86,8 @@ export default function MyBookings() {
       setBookings((prev) =>
         prev.map((b) => (b.id === id ? { ...b, status: "CANCELLED" } : b))
       );
+      // Show the cancelled tab so the user can act on the cancelled booking
+      setActiveTab("CANCELLED");
     } catch (e) {
       alert(e?.message || "Failed to cancel booking.");
     } finally {
@@ -93,10 +97,17 @@ export default function MyBookings() {
 
   // ── Move a booking to the bin ───────────────────────────────────────────────
   const handleBin = (id) => {
-    if (!window.confirm("Move this booking to Booking History?")) return;
-    const updated = [...new Set([...binnedIds, id])];
-    setBinnedIds(updated);
-    saveBinnedIds(userId, updated);
+    if (!window.confirm("Delete this booking?\n\nThis will move the booking to Booking History. You can restore it later from the Booking History tab.")) return;
+
+    // play a short fade animation then add to bin
+    setRemovingId(id);
+    setTimeout(() => {
+      const updated = [...new Set([...binnedIds, id])];
+      setBinnedIds(updated);
+      saveBinnedIds(userId, updated);
+      setRemovingId(null);
+      toast.success("Booking moved to Booking History.");
+    }, 300);
   };
 
   // ── Restore a booking from the bin ─────────────────────────────────────────
@@ -264,11 +275,12 @@ export default function MyBookings() {
               <div
                 key={booking.id}
                 className={`
-                  glass-panel rounded-3xl border shadow-card p-6 transition-opacity
+                  glass-panel rounded-3xl border shadow-card p-6 transform transition-all duration-300
                   ${isInHistory
                     ? "border-rose-100 opacity-80"
                     : "border-surface-container-highest"
                   }
+                  ${removingId === booking.id ? "opacity-0 -translate-y-3 scale-95 pointer-events-none" : "opacity-100"}
                 `}
               >
                 {/* Top row */}
@@ -294,9 +306,9 @@ export default function MyBookings() {
                       <button
                         onClick={() => handleBin(booking.id)}
                         title="Move to Booking History"
-                        className="text-on-surface/30 hover:text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg transition-colors"
+                        className="text-xs text-rose-500 hover:text-rose-700 border border-rose-200 hover:bg-rose-50 px-3 py-1 rounded-lg transition-colors"
                       >
-                        🗑
+                        Delete
                       </button>
                     )}
                     {isInHistory && (
