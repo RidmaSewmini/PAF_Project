@@ -26,7 +26,25 @@ export default function StudentFacilityList() {
         Object.entries(effectiveFilters).filter(([_, v]) => v !== "")
       );
       const response = await getFacilities(activeFilters);
-      setFacilities(response.data.filter((f) => f.status === "ACTIVE"));
+
+      const fallbackImages = {
+        LAB: "https://images.unsplash.com/photo-1581091870627-3c7b0f3c7f5b?auto=format&fit=crop&w=800&q=80",
+        LECTURE_HALL: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80",
+        MEETING_ROOM: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80",
+        EQUIPMENT: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=800&q=80"
+      };
+      const defaultImage = "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=800&q=80";
+
+      const activeFacilities = response.data
+        .filter((f) => f.status === "ACTIVE")
+        .map((f) => {
+          if (!f.imageUrl) {
+            return { ...f, imageUrl: fallbackImages[f.type] || defaultImage };
+          }
+          return f;
+        });
+
+      setFacilities(activeFacilities);
     } catch (e) {
       setError(e?.message || "Failed to load facilities.");
     } finally {
@@ -44,11 +62,11 @@ export default function StudentFacilityList() {
 
   const getTypeConfig = (type) => {
     switch (type) {
-      case "LAB":           return { icon: "🔬", bg: "bg-emerald-100" };
-      case "LECTURE_HALL":  return { icon: "🎓", bg: "bg-violet-100" };
-      case "MEETING_ROOM":  return { icon: "📋", bg: "bg-blue-100" };
-      case "EQUIPMENT":     return { icon: "🔧", bg: "bg-amber-100" };
-      default:              return { icon: "🏛️", bg: "bg-gray-100" };
+      case "LAB": return { icon: "🔬", bg: "bg-emerald-100" };
+      case "LECTURE_HALL": return { icon: "🎓", bg: "bg-violet-100" };
+      case "MEETING_ROOM": return { icon: "📋", bg: "bg-blue-100" };
+      case "EQUIPMENT": return { icon: "🔧", bg: "bg-amber-100" };
+      default: return { icon: "🏛️", bg: "bg-gray-100" };
     }
   };
 
@@ -148,7 +166,11 @@ export default function StudentFacilityList() {
                   {/* Image / Banner */}
                   {facility.imageUrl ? (
                     <img
-                      src={`http://localhost:8080/uploads/${facility.imageUrl}`}
+                      src={
+                        facility.imageUrl?.startsWith("http")
+                          ? facility.imageUrl
+                          : `http://localhost:8080/uploads/facilities/${facility.imageUrl}`
+                      }
                       alt={facility.name}
                       className="w-full h-36 object-cover"
                     />
