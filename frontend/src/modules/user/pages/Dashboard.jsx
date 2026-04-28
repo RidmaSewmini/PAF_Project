@@ -116,7 +116,7 @@ const QUICK_ACTIONS = [
     label: "Report an Issue",
     sub: "Technical or facility tickets",
     bg: "bg-gradient-to-br from-tertiary to-secondary",
-    to: "/dashboard#tickets",
+    to: "/report-incident",
   },
   {
     icon: (
